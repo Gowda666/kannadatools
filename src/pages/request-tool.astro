@@ -1,0 +1,241 @@
+---
+// Phase 7: Request a Custom Tool & Commercial Solutions Page (/request-tool)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ಕಸ್ಟಮ್ ಪರಿಕರ ವಿನಂತಿ - ಕನ್ನಡಟೂಲ್ಸ್ | Request a Custom Tool or Bulk API"
+  description="Request tailored Kannada NLP tools, high-volume batch processing APIs, legacy font converters, and private Whisper deployments for your organization."
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12">
+    
+    <!-- Hero / Header -->
+    <div class="text-center space-y-3 max-w-2xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider border border-amber-300">
+        <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+        <span>ಸಂಸ್ಥೆಗಳು & ವ್ಯಾಪಾರಗಳು</span> / Enterprise & Custom
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight" data-i18n="requestToolHeading">
+        {t('requestToolHeading')}
+      </h1>
+
+      <p class="text-base text-slate-600 leading-relaxed" data-i18n="requestToolSubheading">
+        {t('requestToolSubheading')}
+      </p>
+    </div>
+
+    <!-- Value Proposition Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+        <div class="text-2xl">📦</div>
+        <h3 class="text-sm font-bold text-slate-900">ಬೃಹತ್ ಬ್ಯಾಚ್ API</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          ಲಕ್ಷಾಂತರ ಕಡತಗಳು, ಪುಸ್ತಕಗಳು ಅಥವಾ ದಾಖಲೆಗಳನ್ನು ವೇಗವಾಗಿ ಸಂಸ್ಕರಿಸಲು ಮೀಸಲಾದ REST/GraphQL API.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+        <div class="text-2xl">🔤</div>
+        <h3 class="text-sm font-bold text-slate-900">ವಿಶೇಷ ಫಾಂಟ್ ಪರಿವರ್ತಕಗಳು</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          ಶ್ರೀ ಲಿಪಿ, ಅನು, ಪ್ರಕಾಶಕ ಮೊದಲಾದ ಹಳೆಯ ವಿಶಿಷ್ಟ ಫಾಂಟ್‌ಗಳನ್ನು ಯೂನಿಕೋಡ್‌ಗೆ ಕರಾರುವಕ್ಕಾಗಿ ಪರಿವರ್ತನೆ.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
+        <div class="text-2xl">🚀</div>
+        <h3 class="text-sm font-bold text-slate-900">ಮೀಸಲಾದ ಖಾಸಗಿ ಹೋಸ್ಟಿಂಗ್</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          ನಿಮ್ಮ ಸಂಸ್ಥೆಯ ಸರ್ವರ್‌ಗಳಲ್ಲೇ ಯಾವುದೇ ಕೋಲ್ಡ್ ಸ್ಟಾರ್ಟ್ ಇಲ್ಲದೆ ನಡೆಯುವ ಹೈ-ಸ್ಪೀಡ್ ಸ್ಪೀಚ್-ಟು-ಟೆಕ್ಸ್ಟ್ ಸೆಟಪ್.
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Request Form -->
+    <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-6">
+      <div class="border-b border-slate-100 pb-4">
+        <h2 class="text-xl font-bold text-slate-900">
+          ಕಸ್ಟಮ್ ಪ್ರಸ್ತಾವನೆ ಫಾರ್ಮ್ (Request Form)
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">
+          ನಿಮ್ಮ ಅಗತ್ಯತೆಗಳನ್ನು ನಮೂದಿಸಿ. ನಮ್ಮ ಇಂಜಿನಿಯರಿಂಗ್ ತಂಡ ವಿವರಗಳೊಂದಿಗೆ ಶೀಘ್ರವಾಗಿ ಮರಳಿ ಸಂಪರ್ಕಿಸಲಿದೆ.
+        </p>
+      </div>
+
+      <form
+        id="customToolForm"
+        action="https://formspree.io/f/placeholder_kannadatools_custom"
+        method="POST"
+        class="space-y-5"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Name -->
+          <div>
+            <label for="reqName" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactNameLabel">
+              {t('contactNameLabel')}
+            </label>
+            <input
+              type="text"
+              id="reqName"
+              name="name"
+              required
+              placeholder="ನಿಮ್ಮ ಹೆಸರು (Contact Person)"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-900"
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="reqEmail" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactEmailLabel">
+              {t('contactEmailLabel')}
+            </label>
+            <input
+              type="email"
+              id="reqEmail"
+              name="email"
+              required
+              placeholder="corporate@company.com"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-900"
+            />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Organization -->
+          <div>
+            <label for="reqOrg" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="requestToolOrgLabel">
+              {t('requestToolOrgLabel')}
+            </label>
+            <input
+              type="text"
+              id="reqOrg"
+              name="organization"
+              placeholder="ಕಂಪನಿ / ಕಾಲೇಜು / ಸಂಸ್ಥೆ"
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-900"
+            />
+          </div>
+
+          <!-- Service Type -->
+          <div>
+            <label for="reqType" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="requestToolTypeLabel">
+              {t('requestToolTypeLabel')}
+            </label>
+            <select
+              id="reqType"
+              name="service_type"
+              required
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800"
+            >
+              <option value="custom_tool" data-i18n="requestToolType1">{t('requestToolType1')}</option>
+              <option value="bulk_api" data-i18n="requestToolType2">{t('requestToolType2')}</option>
+              <option value="dedicated_hosting" data-i18n="requestToolType3">{t('requestToolType3')}</option>
+              <option value="sponsorship" data-i18n="requestToolType4">{t('requestToolType4')}</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Volume -->
+        <div>
+          <label for="reqVolume" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="requestToolVolumeLabel">
+            {t('requestToolVolumeLabel')}
+          </label>
+          <select
+            id="reqVolume"
+            name="monthly_volume"
+            class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-800"
+          >
+            <option value="pilot">ಪ್ರಾಯೋಗಿಕ / ಪೈಲಟ್ (&lt; ೧೦,೦೦೦ ಕರೆಗಳು / ಪುಟಗಳು)</option>
+            <option value="medium">ಮಧ್ಯಮ ಗಾತ್ರ (೧೦,೦೦೦ - ೧,೦೦,೦೦೦ ಕರೆಗಳು)</option>
+            <option value="large">ದೊಡ್ಡ ಪ್ರಮಾಣ (&gt; ೧೦,೦೦,೦೦೦ ಕರೆಗಳು / ತಿಂಗಳು)</option>
+            <option value="internal">ಆಂತರಿಕ ಖಾಸಗಿ ನೆಟ್‌ವರ್ಕ್ (On-Premise / VPC)</option>
+          </select>
+        </div>
+
+        <!-- Project Description -->
+        <div>
+          <label for="reqDesc" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="requestToolDescLabel">
+            {t('requestToolDescLabel')}
+          </label>
+          <textarea
+            id="reqDesc"
+            name="project_description"
+            rows="5"
+            required
+            placeholder="ನಿಮ್ಮ ಪ್ರಾಜೆಕ್ಟ್, ಯಾವ ರೀತಿಯ ಇನ್‌ಪುಟ್ ಡೇಟಾ ಇದೆ ಮತ್ತು ನಿರೀಕ್ಷಿತ ಫಲಿತಾಂಶವೇನು ಎಂಬುದನ್ನು ತಿಳಿಸಿ..."
+            class="w-full p-4 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-900 resize-y kn-text"
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          id="customSubmitBtn"
+          class="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-slate-900 cursor-pointer"
+          data-i18n="requestToolSubmitBtn"
+        >
+          {t('requestToolSubmitBtn')}
+        </button>
+      </form>
+
+      <!-- Success Banner -->
+      <div id="customSuccessState" class="hidden p-6 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-2">
+        <div class="w-10 h-10 mx-auto rounded-full bg-amber-200 text-amber-900 flex items-center justify-center font-bold">
+          ✓
+        </div>
+        <h3 class="text-base font-bold text-amber-950" data-i18n="requestToolSuccessMsg">
+          {t('requestToolSuccessMsg')}
+        </h3>
+        <p class="text-xs text-amber-800">
+          ನಮ್ಮ ತಾಂತ್ರಿಕ ತಂಡವು ೧-೨ ವ್ಯವಹಾರ ದಿನಗಳಲ್ಲಿ ಪ್ರಸ್ತಾವನೆಯೊಂದಿಗೆ ಸಂಪರ್ಕಿಸಲಿದೆ.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('customToolForm') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('customSubmitBtn');
+  const successState = document.getElementById('customSuccessState');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitBtn) {
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.textContent = 'ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...';
+      }
+
+      try {
+        const formData = new FormData(form);
+        const action = form.action;
+
+        if (action.includes('placeholder')) {
+          await new Promise((r) => setTimeout(r, 900));
+        } else {
+          await fetch(action, {
+            method: 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' },
+          });
+        }
+
+        form.reset();
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } catch (err) {
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.removeAttribute('disabled');
+          submitBtn.textContent = 'ಪ್ರಸ್ತಾವನೆ ಕಳುಹಿಸಿ (Submit Request)';
+        }
+      }
+    });
+  }
+</script>

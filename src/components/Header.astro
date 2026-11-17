@@ -1,0 +1,140 @@
+---
+// Header component with responsive navigation, logo, and bilingual language toggle
+import { t } from '../lib/i18n';
+---
+
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-colors shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-red-500 rounded-lg p-1">
+        <!-- Logo Emblem inspired by Karnataka red-yellow flag gradient -->
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-amber-400 flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-105 transition-transform">
+          <span>ಕ</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 group-hover:text-red-600 transition-colors">
+            <span data-i18n="siteName">ಕನ್ನಡಟೂಲ್ಸ್</span>
+          </span>
+          <span class="text-xs text-slate-500 hidden sm:inline-block font-medium" data-i18n="siteTagline">
+            ಉಚಿತ ಮತ್ತು ಮುಕ್ತ ತಂತ್ರಾಂಶ ಕನ್ನಡ ಡಿಜಿಟಲ್ ಉಪಕರಣಗಳು
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2 text-sm font-medium text-slate-700">
+        <a href="/" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navHome">
+          {t('navHome')}
+        </a>
+        <a href="/transliterate" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navTransliterate">
+          {t('navTransliterate')}
+        </a>
+        <a href="/cleaner" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navCleaner">
+          {t('navCleaner')}
+        </a>
+        <a href="/ocr" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navOcr">
+          {t('navOcr')}
+        </a>
+        <a href="/speech" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navSpeech">
+          {t('navSpeech')}
+        </a>
+        <a href="/about" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navAbout">
+          {t('navAbout')}
+        </a>
+        <a href="/contact" class="px-3 py-2 rounded-md hover:text-red-600 hover:bg-red-50 transition-colors" data-i18n="navContact">
+          {t('navContact')}
+        </a>
+      </nav>
+
+      <!-- Right controls: Language Toggle & Mobile Hamburger -->
+      <div class="flex items-center gap-3">
+        <!-- Language Switcher Button -->
+        <button
+          id="lang-toggle-btn"
+          type="button"
+          aria-label="Toggle language between Kannada and English"
+          class="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-amber-100 hover:text-amber-900 border border-slate-300 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm cursor-pointer"
+        >
+          <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+          </svg>
+          <span id="lang-toggle-text">English</span>
+        </button>
+
+        <!-- Mobile menu hamburger button -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
+          class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:text-red-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          <svg id="menu-icon-open" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="menu-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-6 space-y-1 shadow-lg">
+    <a href="/" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navHome">
+      {t('navHome')}
+    </a>
+    <a href="/transliterate" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navTransliterate">
+      {t('navTransliterate')}
+    </a>
+    <a href="/cleaner" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navCleaner">
+      {t('navCleaner')}
+    </a>
+    <a href="/ocr" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navOcr">
+      {t('navOcr')}
+    </a>
+    <a href="/speech" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navSpeech">
+      {t('navSpeech')}
+    </a>
+    <a href="/about" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navAbout">
+      {t('navAbout')}
+    </a>
+    <a href="/contact" class="block px-3 py-2.5 rounded-md text-base font-medium text-slate-800 hover:text-red-600 hover:bg-red-50" data-i18n="navContact">
+      {t('navContact')}
+    </a>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle logic
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  if (menuBtn && mobileMenu && iconOpen && iconClose) {
+    menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+
+    // Close menu when clicking navigation links inside mobile menu
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+  }
+</script>
+

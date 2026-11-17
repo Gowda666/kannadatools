@@ -1,0 +1,485 @@
+---
+// Phase 5: Optical Character Recognition (OCR) Tool (/ocr)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ಚಿತ್ರದಿಂದ ಕನ್ನಡ ಪಠ್ಯ (OCR) - ಕನ್ನಡಟೂಲ್ಸ್ | Kannada Image to Text OCR"
+  description="Free browser-based Kannada OCR tool. Extract printed Kannada text from images (JPG/PNG max 5MB) using Tesseract.js directly in your browser."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- Top Header & Banner -->
+    <div class="mb-8 border-b border-slate-200 pb-6 text-center sm:text-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold uppercase tracking-wider mb-2 border border-emerald-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+        <span>೧೦೦% ಬ್ರೌಸರ್-ಮಾತ್ರ / WebAssembly OCR</span>
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight" data-i18n="ocrHeading">
+        {t('ocrHeading')}
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl" data-i18n="ocrSubheading">
+        {t('ocrSubheading')}
+      </p>
+
+      <!-- Prominent Required Note: Works best with clear, printed text -->
+      <div class="mt-4 inline-flex items-center gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-medium">
+        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span data-i18n="ocrBestWithPrintedNote">{t('ocrBestWithPrintedNote')}</span>
+      </div>
+    </div>
+
+    <!-- Main Two-Column Workflow (Left: Upload & Preview; Right: Extracted Editable Text) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      
+      <!-- Left Column: Upload Area & Preview -->
+      <div class="space-y-6">
+        
+        <!-- Drag & Drop Upload Container -->
+        <div
+          id="drop-zone"
+          class="relative border-2 border-dashed border-slate-300 hover:border-emerald-500 rounded-3xl p-6 sm:p-8 text-center bg-white transition-all cursor-pointer group shadow-sm"
+        >
+          <input
+            type="file"
+            id="file-input"
+            accept="image/jpeg,image/png,image/webp"
+            class="hidden"
+          />
+
+          <div id="upload-prompt" class="space-y-3">
+            <div class="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-800" data-i18n="uploadAreaTitle">
+                {t('uploadAreaTitle')}
+              </p>
+              <p class="text-xs text-slate-500 mt-1" data-i18n="uploadAreaSubtitle">
+                {t('uploadAreaSubtitle')}
+              </p>
+            </div>
+            <button
+              type="button"
+              id="browse-btn"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 group-hover:bg-emerald-600 group-hover:text-white rounded-xl text-xs font-bold text-slate-700 transition-colors shadow-sm"
+            >
+              <span data-i18n="selectFileBtn">{t('selectFileBtn')}</span>
+            </button>
+          </div>
+
+          <!-- Image Preview Area (Hidden until image selected) -->
+          <div id="preview-container" class="hidden space-y-4">
+            <div class="relative max-h-72 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-center">
+              <img
+                id="preview-img"
+                src=""
+                alt="Selected image preview"
+                class="max-h-72 w-auto object-contain rounded-xl"
+              />
+            </div>
+            
+            <div class="flex items-center justify-between text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="truncate max-w-[200px] text-left">
+                <p id="file-name" class="font-bold text-slate-800 truncate">image.png</p>
+                <p id="file-size" class="text-slate-400">0 KB</p>
+              </div>
+              <button
+                type="button"
+                id="remove-img-btn"
+                class="text-red-600 hover:text-red-800 font-bold transition-colors flex items-center gap-1 focus:outline-none"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span data-i18n="removeImageBtn">{t('removeImageBtn')}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Notification Toast/Card -->
+        <div id="ocr-error" class="hidden p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm flex items-center gap-2">
+          <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span id="ocr-error-text"></span>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <button
+            id="start-ocr-btn"
+            type="button"
+            disabled
+            class="w-full sm:flex-1 py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-md shadow-emerald-900/10 transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          >
+            <svg id="ocr-btn-icon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span id="ocr-btn-text" data-i18n="startOcrBtn">{t('startOcrBtn')}</span>
+          </button>
+
+          <!-- Quick Try Sample Image Button -->
+          <button
+            id="try-sample-btn"
+            type="button"
+            class="w-full sm:w-auto py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+          >
+            <span data-i18n="trySampleImageBtn">{t('trySampleImageBtn')}</span>
+          </button>
+        </div>
+
+        <!-- OCR Progress Bar Container -->
+        <div id="progress-container" class="hidden p-5 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+            <span id="progress-status" class="truncate pr-2">ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ...</span>
+            <span id="progress-percent" class="font-mono text-emerald-600">0%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+            <div
+              id="progress-bar"
+              class="bg-gradient-to-r from-emerald-500 to-teal-500 h-3 rounded-full transition-all duration-200"
+              style="width: 0%"
+            ></div>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-tight">
+            ಮೊದಲ ಬಾರಿಗೆ ಕನ್ನಡ ಭಾಷಾ ಮಾದರಿ (~೪ MB) ಡೌನ್‌ಲೋಡ್ ಆಗಲು ಕೆಲ ಸೆಕೆಂಡು ಬೇಕಾಗಬಹುದು. ನಂತರ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕ್ಯಾಶ್ ಆಗುತ್ತದೆ.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Editable Output Area -->
+      <div class="flex flex-col bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden focus-within:border-emerald-500 transition-all">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-5 py-4 bg-slate-50 border-b border-slate-200">
+          <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span data-i18n="ocrOutputLabel">{t('ocrOutputLabel')}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Copy button -->
+            <button
+              id="ocr-copy-btn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="ocr-copy-text" data-i18n="copyBtn">{t('copyBtn')}</span>
+            </button>
+
+            <!-- Download as .txt button -->
+            <button
+              id="ocr-download-btn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-lg text-xs font-bold transition-all border border-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-300 cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span data-i18n="downloadTxtBtn">{t('downloadTxtBtn')}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Editable Output Textarea -->
+        <textarea
+          id="ocr-output"
+          rows="16"
+          class="w-full p-5 text-base sm:text-lg text-slate-900 bg-transparent resize-y focus:outline-none placeholder-slate-400 font-kannada leading-relaxed"
+          data-i18n-placeholder="ocrOutputPlaceholder"
+          placeholder={t('ocrOutputPlaceholder')}
+        ></textarea>
+
+        <!-- Stats Bar -->
+        <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+          <div class="flex items-center gap-3">
+            <span class="text-emerald-700 font-sans font-medium">✓ ಸಂಪಾದಿಸಬಹುದಾದ ಯೂನಿಕೋಡ್ (Editable UTF-8)</span>
+            <span>|</span>
+            <a
+              href="/contact?type=mistake"
+              data-report-mistake="ocr"
+              class="font-sans font-semibold text-emerald-800 hover:underline"
+              data-i18n="reportMistake"
+            >
+              {t('reportMistake')} →
+            </a>
+          </div>
+          <div class="flex items-center gap-4">
+            <span>ಅಕ್ಷರಗಳು: <strong id="ocr-char-count">0</strong></span>
+            <span>ಪದಗಳು: <strong id="ocr-word-count">0</strong></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  import { createWorker } from 'tesseract.js';
+  import { validateImageFile, formatOcrStatus, downloadTextAsFile } from '../lib/ocr';
+
+  const fileInput = document.getElementById('file-input') as HTMLInputElement | null;
+  const dropZone = document.getElementById('drop-zone');
+  const browseBtn = document.getElementById('browse-btn');
+  const uploadPrompt = document.getElementById('upload-prompt');
+  const previewContainer = document.getElementById('preview-container');
+  const previewImg = document.getElementById('preview-img') as HTMLImageElement | null;
+  const fileName = document.getElementById('file-name');
+  const fileSize = document.getElementById('file-size');
+  const removeImgBtn = document.getElementById('remove-img-btn');
+  const startOcrBtn = document.getElementById('start-ocr-btn') as HTMLButtonElement | null;
+  const trySampleBtn = document.getElementById('try-sample-btn');
+
+  const progressContainer = document.getElementById('progress-container');
+  const progressBar = document.getElementById('progress-bar');
+  const progressStatus = document.getElementById('progress-status');
+  const progressPercent = document.getElementById('progress-percent');
+
+  const ocrOutput = document.getElementById('ocr-output') as HTMLTextAreaElement | null;
+  const ocrCopyBtn = document.getElementById('ocr-copy-btn');
+  const ocrCopyText = document.getElementById('ocr-copy-text');
+  const ocrDownloadBtn = document.getElementById('ocr-download-btn');
+  const ocrCharCount = document.getElementById('ocr-char-count');
+  const ocrWordCount = document.getElementById('ocr-word-count');
+  const ocrError = document.getElementById('ocr-error');
+  const ocrErrorText = document.getElementById('ocr-error-text');
+
+  let selectedFile: File | null = null;
+  let isProcessing = false;
+
+  function showError(msg: string) {
+    if (ocrError && ocrErrorText) {
+      ocrErrorText.textContent = msg;
+      ocrError.classList.remove('hidden');
+    }
+  }
+
+  function hideError() {
+    if (ocrError) {
+      ocrError.classList.add('hidden');
+    }
+  }
+
+  function handleFileSelected(file: File) {
+    hideError();
+    const validation = validateImageFile(file);
+    if (!validation.valid && validation.error) {
+      const currentLang = (document.documentElement.lang === 'en' ? 'en' : 'kn') as 'kn' | 'en';
+      showError(validation.error[currentLang] || validation.error.kn);
+      return;
+    }
+
+    selectedFile = file;
+
+    // Display preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (previewImg && e.target?.result) {
+        previewImg.src = e.target.result as string;
+      }
+      if (uploadPrompt) uploadPrompt.classList.add('hidden');
+      if (previewContainer) previewContainer.classList.remove('hidden');
+      if (fileName) fileName.textContent = file.name;
+      if (fileSize) fileSize.textContent = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+      if (startOcrBtn) startOcrBtn.removeAttribute('disabled');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resetImage() {
+    selectedFile = null;
+    if (fileInput) fileInput.value = '';
+    if (previewImg) previewImg.src = '';
+    if (previewContainer) previewContainer.classList.add('hidden');
+    if (uploadPrompt) uploadPrompt.classList.remove('hidden');
+    if (startOcrBtn) startOcrBtn.setAttribute('disabled', 'true');
+    hideError();
+  }
+
+  // File input change
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files && files[0]) {
+        handleFileSelected(files[0]);
+      }
+    });
+  }
+
+  // Click on dropzone or browse button
+  if (browseBtn && fileInput) {
+    browseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInput.click();
+    });
+  }
+
+  if (dropZone && fileInput) {
+    dropZone.addEventListener('click', () => {
+      if (!selectedFile) {
+        fileInput.click();
+      }
+    });
+
+    // Drag & Drop
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-emerald-500', 'bg-emerald-50/20');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-emerald-500', 'bg-emerald-50/20');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-emerald-500', 'bg-emerald-50/20');
+      const files = e.dataTransfer?.files;
+      if (files && files[0]) {
+        handleFileSelected(files[0]);
+      }
+    });
+  }
+
+  // Remove image button
+  if (removeImgBtn) {
+    removeImgBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetImage();
+    });
+  }
+
+  // Create built-in sample Kannada image
+  if (trySampleBtn) {
+    trySampleBtn.addEventListener('click', () => {
+      // Draw a high-contrast canvas with printed Kannada text
+      const canvas = document.createElement('canvas');
+      canvas.width = 600;
+      canvas.height = 200;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 36px "Noto Sans Kannada", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('ಸಿರಿಗನ್ನಡಂ ಗೆಲ್ಗೆ', canvas.width / 2, 70);
+        ctx.font = '24px "Noto Sans Kannada", sans-serif';
+        ctx.fillText('ಕನ್ನಡ ಡಿಜಿಟಲ್ ತಂತ್ರಜ್ಞಾನ', canvas.width / 2, 130);
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const sampleFile = new File([blob], 'kannada-sample.png', { type: 'image/png' });
+            handleFileSelected(sampleFile);
+          }
+        }, 'image/png');
+      }
+    });
+  }
+
+  // Run OCR
+  if (startOcrBtn) {
+    startOcrBtn.addEventListener('click', async () => {
+      if (!selectedFile || isProcessing) return;
+      isProcessing = true;
+      hideError();
+
+      startOcrBtn.setAttribute('disabled', 'true');
+      if (progressContainer) progressContainer.classList.remove('hidden');
+
+      const currentLang = (document.documentElement.lang === 'en' ? 'en' : 'kn') as 'kn' | 'en';
+
+      try {
+        const worker = await createWorker('kan', 1, {
+          logger: (m: any) => {
+            const formatted = formatOcrStatus(m.status, m.progress, currentLang);
+            const percent = Math.min(100, Math.max(0, Math.round((m.progress || 0) * 100)));
+            if (progressStatus) progressStatus.textContent = formatted;
+            if (progressPercent) progressPercent.textContent = `${percent}%`;
+            if (progressBar) progressBar.style.width = `${percent}%`;
+          },
+        });
+
+        const ret = await worker.recognize(selectedFile);
+        const text = ret.data.text.trim();
+
+        if (ocrOutput) {
+          ocrOutput.value = text;
+          updateOutputStats();
+        }
+
+        await worker.terminate();
+
+        if (progressStatus) {
+          progressStatus.textContent = currentLang === 'kn' ? 'ಪೂರ್ಣಗೊಂಡಿದೆ! (Completed)' : 'Completed successfully!';
+        }
+        if (progressPercent) progressPercent.textContent = '100%';
+        if (progressBar) progressBar.style.width = '100%';
+      } catch (err: any) {
+        showError(
+          currentLang === 'kn'
+            ? 'OCR ಸಂಸ್ಕರಣೆಯಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ. ದಯವಿಟ್ಟು ಸ್ಪಷ್ಟವಾದ ಚಿತ್ರದೊಂದಿಗೆ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.'
+            : 'Error recognizing text from image. Please try again with a clearer image.'
+        );
+      } finally {
+        isProcessing = false;
+        startOcrBtn.removeAttribute('disabled');
+      }
+    });
+  }
+
+  function updateOutputStats() {
+    if (!ocrOutput) return;
+    const txt = ocrOutput.value.trim();
+    if (ocrCharCount) ocrCharCount.textContent = String(txt.length);
+    if (ocrWordCount) ocrWordCount.textContent = String(txt ? txt.split(/\s+/).length : 0);
+  }
+
+  if (ocrOutput) {
+    ocrOutput.addEventListener('input', updateOutputStats);
+  }
+
+  // Copy button
+  if (ocrCopyBtn && ocrOutput && ocrCopyText) {
+    ocrCopyBtn.addEventListener('click', async () => {
+      const text = ocrOutput.value;
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        const orig = ocrCopyText.textContent;
+        ocrCopyText.textContent = 'ನಕಲಿಸಲಾಗಿದೆ!';
+        ocrCopyBtn.classList.replace('bg-emerald-600', 'bg-emerald-800');
+        setTimeout(() => {
+          ocrCopyText.textContent = orig;
+          ocrCopyBtn.classList.replace('bg-emerald-800', 'bg-emerald-600');
+        }, 2000);
+      } catch {
+        ocrOutput.select();
+        document.execCommand('copy');
+      }
+    });
+  }
+
+  // Download .txt button
+  if (ocrDownloadBtn && ocrOutput) {
+    ocrDownloadBtn.addEventListener('click', () => {
+      const text = ocrOutput.value;
+      if (!text) return;
+      downloadTextAsFile(text, 'kannada-ocr-result.txt');
+    });
+  }
+</script>

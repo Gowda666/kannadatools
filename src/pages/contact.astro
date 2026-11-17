@@ -1,0 +1,269 @@
+---
+// Phase 7: Contact Page (/contact)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ಸಂಪರ್ಕಿಸಿ - ಕನ್ನಡಟೂಲ್ಸ್ | Contact KannadaTools"
+  description="Contact the KannadaTools team for inquiries, bug reports, feature requests, custom tools, or sponsorship opportunities."
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12">
+    
+    <!-- Header -->
+    <div class="text-center space-y-3 max-w-2xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-semibold uppercase tracking-wider">
+        <span>ಸಂಪರ್ಕ & ಬೆಂಬಲ</span> / Support
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight" data-i18n="contactHeading">
+        {t('contactHeading')}
+      </h1>
+      <p class="text-base text-slate-600 leading-relaxed" data-i18n="contactSubheading">
+        {t('contactSubheading')}
+      </p>
+    </div>
+
+    <!-- Main Grid: Form + Info -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      
+      <!-- Contact Form (2 Columns) -->
+      <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-6">
+        
+        <form
+          id="contactForm"
+          action="https://formspree.io/f/placeholder_kannadatools_contact"
+          method="POST"
+          class="space-y-5"
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Name -->
+            <div>
+              <label for="contactName" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactNameLabel">
+                {t('contactNameLabel')}
+              </label>
+              <input
+                type="text"
+                id="contactName"
+                name="name"
+                required
+                placeholder="ನಿಮ್ಮ ಹೆಸರು (Your Name)"
+                class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-900"
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="contactEmail" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactEmailLabel">
+                {t('contactEmailLabel')}
+              </label>
+              <input
+                type="email"
+                id="contactEmail"
+                name="email"
+                required
+                placeholder="name@example.com"
+                class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-900"
+              />
+            </div>
+          </div>
+
+          <!-- Subject / Category -->
+          <div>
+            <label for="contactSubject" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactSubjectLabel">
+              {t('contactSubjectLabel')}
+            </label>
+            <select
+              id="contactSubject"
+              name="subject"
+              required
+              class="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-800"
+            >
+              <option value="general" data-i18n="contactSubjectGeneral">{t('contactSubjectGeneral')}</option>
+              <option value="bug" data-i18n="contactSubjectBug">{t('contactSubjectBug')}</option>
+              <option value="feature" data-i18n="contactSubjectFeature">{t('contactSubjectFeature')}</option>
+              <option value="custom" data-i18n="contactSubjectCustom">{t('contactSubjectCustom')}</option>
+              <option value="sponsor" data-i18n="contactSubjectSponsor">{t('contactSubjectSponsor')}</option>
+            </select>
+          </div>
+
+          <!-- Message -->
+          <div>
+            <label for="contactMessage" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="contactMessageLabel">
+              {t('contactMessageLabel')}
+            </label>
+            <textarea
+              id="contactMessage"
+              name="message"
+              rows="6"
+              required
+              placeholder="ನಿಮ್ಮ ಸಂದೇಶ ಅಥವಾ ಪ್ರಶ್ನೆಯನ್ನು ಇಲ್ಲಿ ಬರೆಯಿರಿ..."
+              class="w-full p-4 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-900 resize-y kn-text"
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            id="contactSubmitBtn"
+            class="w-full sm:w-auto px-8 py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+            data-i18n="contactSubmitBtn"
+          >
+            {t('contactSubmitBtn')}
+          </button>
+        </form>
+
+        <!-- Success Message Banner -->
+        <div id="contactSuccessState" class="hidden p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center space-y-2">
+          <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            ✓
+          </div>
+          <h3 class="text-base font-bold text-emerald-900" data-i18n="contactSuccessMsg">
+            {t('contactSuccessMsg')}
+          </h3>
+          <p class="text-xs text-emerald-700">
+            ನಾವು ೨೪ ರಿಂದ ೪೮ ಗಂಟೆಗಳ ಒಳಗೆ ನಿಮ್ಮ ಇಮೇಲ್ ಮೂಲಕ ಸಂಪರ್ಕಿಸುತ್ತೇವೆ.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Sidebar: Contact Info & FAQ Quick Links -->
+      <div class="space-y-6">
+        
+        <!-- Info Card -->
+        <div class="bg-slate-50 rounded-3xl border border-slate-200 p-6 space-y-4 text-xs text-slate-600">
+          <h3 class="text-sm font-bold text-slate-900">ತ್ವರಿತ ಸಂಪರ್ಕ ಮಾಹಿತಿ</h3>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="text-base">📧</span>
+              <span>ಇಮೇಲ್: <strong class="text-slate-800">contact@kannadatools.org</strong></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-base">🐙</span>
+              <span>GitHub: <a href="https://github.com/Gowda666/kannadatools" target="_blank" rel="noopener noreferrer" class="text-red-700 hover:underline font-semibold">Gowda666/kannadatools</a></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-base">⏱️</span>
+              <span>ಪ್ರತಿಕ್ರಿಯೆ ಸಮಯ: ೨೪-೪೮ ಗಂಟೆಗಳು</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom Tool Prompt -->
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100/60 rounded-3xl border border-amber-200 p-6 space-y-3">
+          <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[11px] font-bold">
+            ವ್ಯಾಪಾರ ಮತ್ತು ಸಂಸ್ಥೆಗಳು
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">ಕಸ್ಟಮ್ ಪರಿಕರ ಅಥವಾ ಬೃಹತ್ API ಬೇಕೇ?</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            ದೊಡ್ಡ ಪ್ರಮಾಣದ ದಾಖಲೆಗಳ ಪರಿವರ್ತನೆ, ಆಂತರಿಕ ಸರ್ವರ್ ಸೆಟಪ್ ಅಥವಾ ಪ್ರಾಯೋಜಕತ್ವಕ್ಕಾಗಿ ನಮ್ಮ ಮೀಸಲಾದ ಪುಟವನ್ನು ನೋಡಿ.
+          </p>
+          <a
+            href="/request-tool"
+            class="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:underline"
+          >
+            <span>ಕಸ್ಟಮ್ ವಿನಂತಿ ಸಲ್ಲಿಸಿ</span> →
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 space-y-6">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+        ಸಾಮಾನ್ಯ ಪ್ರಶ್ನೆಗಳು (Frequently Asked Questions)
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+        
+        <div class="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <h4 class="font-bold text-slate-900">೧. ಕನ್ನಡಟೂಲ್ಸ್ ನಿಜವಾಗಿಯೂ ಉಚಿತವೇ?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            ಹೌದು, ೧೦೦% ಉಚಿತ. ಯಾವುದೇ ಲಾಗಿನ್, ಕ್ರೆಡಿಟ್ ಕಾರ್ಡ್ ಅಥವಾ ಮರೆಮಾಚಿದ ಶುಲ್ಕಗಳಿಲ್ಲ. ನಮ್ಮ ಎಲ್ಲಾ ಮೂಲಭೂತ ಪರಿಕರಗಳು ಸದಾ ಉಚಿತವಾಗಿರಲಿವೆ.
+          </p>
+        </div>
+
+        <div class="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <h4 class="font-bold text-slate-900">೨. ನನ್ನ ಡೇಟಾ ಅಥವಾ ಫೋಟೋಗಳು ಸುರಕ್ಷಿತವೇ?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            ಲಿಪ್ಯಂತರಣ, ಪಠ್ಯ ಶುದ್ಧೀಕರಣ ಮತ್ತು OCR ಸಂಪೂರ್ಣವಾಗಿ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲೇ ರನ್ ಆಗುತ್ತವೆ. ಯಾವುದೇ ಫೋಟೋ ಸರ್ವರ್‌ಗೆ ಹೋಗುವುದಿಲ್ಲ. ಆಡಿಯೋ ಕಡತಗಳು ಕೇವಲ ಪರಿವರ್ತನೆಗೆ ಬಳಕೆಯಾಗಿ ತಕ್ಷಣ ನಾಶವಾಗುತ್ತವೆ.
+          </p>
+        </div>
+
+        <div class="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <h4 class="font-bold text-slate-900">೩. ನಾನು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಬಳಸಬಹುದೇ?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            ಲಿಪ್ಯಂತರಣ ಮತ್ತು ಪಠ್ಯ ಶುದ್ಧೀಕರಣ ಒಮ್ಮೆ ಪುಟ ಲೋಡ್ ಆದ ನಂತರ ಇಂಟರ್ನೆಟ್ ಇಲ್ಲದಿದ್ದರೂ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತವೆ.
+          </p>
+        </div>
+
+        <div class="space-y-1.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <h4 class="font-bold text-slate-900">೪. ನಾನು ಕೋಡ್ ಬದಲಾವಣೆ ಅಥವಾ ಸಹಯೋಗ ನೀಡಬಹುದೇ?</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            ಖಂಡಿತವಾಗಿ! ಯೋಜನೆ ಮುಕ್ತ ಮೂಲದ್ದಾಗಿದೆ. ನಮ್ಮ GitHub ರೆಪೊಸಿಟರಿಯಲ್ಲಿ ನೀವು Pull Request ಸಲ್ಲಿಸಬಹುದು ಅಥವಾ ಹೊಸ ಪದಗಳ ನಿಘಂಟು ಸೇರಿಸಬಹುದು.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<script>
+  // Form handling & query param prefill
+  const form = document.getElementById('contactForm') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('contactSubmitBtn');
+  const successState = document.getElementById('contactSuccessState');
+  const subjectSelect = document.getElementById('contactSubject') as HTMLSelectElement | null;
+
+  // Check URL query parameters (e.g. ?type=custom or ?type=mistake)
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
+    if (type && subjectSelect) {
+      if (type === 'custom') subjectSelect.value = 'custom';
+      else if (type === 'mistake') subjectSelect.value = 'bug';
+      else if (type === 'sponsor') subjectSelect.value = 'sponsor';
+    }
+  } catch {}
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitBtn) {
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.textContent = 'ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ...';
+      }
+
+      try {
+        const formData = new FormData(form);
+        const action = form.action;
+
+        if (action.includes('placeholder')) {
+          await new Promise((r) => setTimeout(r, 900));
+        } else {
+          await fetch(action, {
+            method: 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' },
+          });
+        }
+
+        form.reset();
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } catch (err) {
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.removeAttribute('disabled');
+          submitBtn.textContent = 'ಸಂದೇಶ ಕಳುಹಿಸಿ (Send Message)';
+        }
+      }
+    });
+  }
+</script>

@@ -1,0 +1,248 @@
+---
+// Phase 7: About, How It Works, and Open Source Page (/about)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ನಮ್ಮ ಬಗ್ಗೆ & ತಂತ್ರಜ್ಞಾನ - ಕನ್ನಡಟೂಲ್ಸ್ | About KannadaTools & Architecture"
+  description="Learn how KannadaTools operates with zero server hosting costs using client-side WebAssembly, AI Whisper models, open source code, and browser-first computing."
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-16">
+    
+    <!-- Hero / Header Section -->
+    <section class="text-center space-y-4 max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-100 text-red-800 text-xs font-bold uppercase tracking-wider border border-red-200">
+        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+        <span data-i18n="openSourceBadge">{t('openSourceBadge')}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight" data-i18n="aboutHeading">
+        {t('aboutHeading')}
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-600 leading-relaxed" data-i18n="aboutSubheading">
+        {t('aboutSubheading')}
+      </p>
+    </section>
+
+    <!-- Mission & Story -->
+    <section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-10 space-y-4">
+      <div class="inline-flex items-center gap-2 text-xs font-bold text-red-700 uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-red-600"></span>
+        <span>ಧ್ಯೇಯೋದ್ದೇಶ / Mission</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900" data-i18n="aboutMissionTitle">
+        {t('aboutMissionTitle')}
+      </h2>
+      <p class="text-slate-700 text-base sm:text-lg leading-relaxed" data-i18n="aboutMissionDesc">
+        {t('aboutMissionDesc')}
+      </p>
+      <div class="pt-2 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-semibold text-slate-600">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+          <span class="text-2xl">💰</span>
+          <div>
+            <div class="font-bold text-slate-900">₹೦ / ತಿಂಗಳಿಗೆ</div>
+            <div>ಯಾವುದೇ ಚಂದಾದಾರಿಕೆ ಇಲ್ಲ</div>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+          <span class="text-2xl">⚡</span>
+          <div>
+            <div class="font-bold text-slate-900">ಬ್ರೌಸರ್-ಮಾತ್ರ</div>
+            <div>ಕ್ಲೈಂಟ್-ಸೈಡ್ ಪ್ರೊಸೆಸಿಂಗ್</div>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+          <span class="text-2xl">🔒</span>
+          <div>
+            <div class="font-bold text-slate-900">ಖಾಸಗಿತನ ಮೊದಲು</div>
+            <div>ಯಾವುದೇ ಡೇಟಾ ಉಳಿಸುವುದಿಲ್ಲ</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section (The 4 Tools) -->
+    <section class="space-y-8" id="how-it-works">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900" data-i18n="howItWorksTitle">
+          {t('howItWorksTitle')}
+        </h2>
+        <p class="text-sm text-slate-600">
+          ಕನ್ನಡಟೂಲ್ಸ್ ದುಬಾರಿ ಕ್ಲೌಡ್ ಸರ್ವರ್‌ಗಳ ಬದಲಿಗೆ ಮುಕ್ತ ವೆಬ್ ತಂತ್ರಜ್ಞಾನಗಳು ಮತ್ತು WebAssembly ಬಳಸುತ್ತದೆ.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Tool 1: Transliteration -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-sm hover:border-red-300 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-red-100 text-red-700 flex items-center justify-center font-bold text-lg">
+            ಕ
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center justify-between">
+            <span data-i18n="toolTransliterateTitle">{t('toolTransliterateTitle')}</span>
+            <span class="text-xs font-mono text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-100">Sanscript JS</span>
+          </h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="howTransliterateDesc">
+            {t('howTransliterateDesc')}
+          </p>
+          <a href="/transliterate" class="inline-flex items-center text-xs font-bold text-red-700 hover:text-red-800">
+            ಪರಿಕರವನ್ನು ಬಳಸಿ →
+          </a>
+        </div>
+
+        <!-- Tool 2: Text Cleaner -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-sm hover:border-amber-300 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg">
+            ✨
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center justify-between">
+            <span data-i18n="toolCleanerTitle">{t('toolCleanerTitle')}</span>
+            <span class="text-xs font-mono text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">Regex & Unicode UTF-8</span>
+          </h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="howCleanerDesc">
+            {t('howCleanerDesc')}
+          </p>
+          <a href="/cleaner" class="inline-flex items-center text-xs font-bold text-amber-700 hover:text-amber-800">
+            ಪರಿಕರವನ್ನು ಬಳಸಿ →
+          </a>
+        </div>
+
+        <!-- Tool 3: OCR -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-sm hover:border-emerald-300 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg">
+            📷
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center justify-between">
+            <span data-i18n="toolOcrTitle">{t('toolOcrTitle')}</span>
+            <span class="text-xs font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Tesseract.js WASM</span>
+          </h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="howOcrDesc">
+            {t('howOcrDesc')}
+          </p>
+          <a href="/ocr" class="inline-flex items-center text-xs font-bold text-emerald-700 hover:text-emerald-800">
+            ಪರಿಕರವನ್ನು ಬಳಸಿ →
+          </a>
+        </div>
+
+        <!-- Tool 4: Speech to Text -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-3 shadow-sm hover:border-blue-300 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">
+            🎙️
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center justify-between">
+            <span data-i18n="toolSpeechTitle">{t('toolSpeechTitle')}</span>
+            <span class="text-xs font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">Whisper AI + Gradio</span>
+          </h3>
+          <p class="text-sm text-slate-600 leading-relaxed" data-i18n="howSpeechDesc">
+            {t('howSpeechDesc')}
+          </p>
+          <a href="/speech" class="inline-flex items-center text-xs font-bold text-blue-700 hover:text-blue-800">
+            ಪರಿಕರವನ್ನು ಬಳಸಿ →
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Honest Note on Free-Hosting Limits -->
+    <section class="bg-gradient-to-br from-amber-50/80 via-white to-amber-50/50 rounded-3xl border border-amber-200/90 p-6 sm:p-10 space-y-6 shadow-sm">
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider">
+          <svg class="w-4 h-4 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span data-i18n="freeHostingLimitsTitle">{t('freeHostingLimitsTitle')}</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+          ಪ್ರಾಮಾಣಿಕತೆ ಮತ್ತು ಮುಕ್ತತೆಯೇ ನಮ್ಮ ತತ್ವ
+        </h2>
+        <p class="text-sm sm:text-base text-slate-700 leading-relaxed" data-i18n="freeHostingLimitsDesc">
+          {t('freeHostingLimitsDesc')}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <div class="p-5 bg-white rounded-2xl border border-amber-200/60 shadow-xs space-y-2">
+          <div class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span>⚙️</span>
+            <span data-i18n="limitCpuTitle">{t('limitCpuTitle')}</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="limitCpuDesc">
+            {t('limitCpuDesc')}
+          </p>
+        </div>
+
+        <div class="p-5 bg-white rounded-2xl border border-amber-200/60 shadow-xs space-y-2">
+          <div class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span>⏳</span>
+            <span data-i18n="limitColdStartTitle">{t('limitColdStartTitle')}</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="limitColdStartDesc">
+            {t('limitColdStartDesc')}
+          </p>
+        </div>
+
+        <div class="p-5 bg-white rounded-2xl border border-amber-200/60 shadow-xs space-y-2">
+          <div class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span>📏</span>
+            <span data-i18n="limitFilesTitle">{t('limitFilesTitle')}</span>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed" data-i18n="limitFilesDesc">
+            {t('limitFilesDesc')}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Source & GitHub Section -->
+    <section class="bg-slate-900 text-white rounded-3xl p-6 sm:p-10 space-y-6 shadow-xl">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-3 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-amber-400 text-xs font-mono font-semibold">
+            <span>License: MIT (Free & Permissive)</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white" data-i18n="openSourceTitle">
+            {t('openSourceTitle')}
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="openSourceDesc">
+            {t('openSourceDesc')}
+          </p>
+        </div>
+
+        <div class="shrink-0">
+          <a
+            href="https://github.com/Gowda666/kannadatools"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-900 rounded-xl font-bold text-sm shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-white"
+          >
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            <span data-i18n="viewOnGithubBtn">{t('viewOnGithubBtn')}</span> ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action: Custom tool or Contact -->
+    <section class="border-t border-slate-200 pt-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div>
+        <h3 class="text-lg font-bold text-slate-900">ಪ್ರಶ್ನೆಗಳಿವೆಯೇ ಅಥವಾ ಕಸ್ಟಮ್ ಪರಿಹಾರ ಬೇಕೇ?</h3>
+        <p class="text-xs text-slate-500 mt-1">ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ನಿಮ್ಮ ಅಗತ್ಯಕ್ಕೆ ತಕ್ಕ ಕಸ್ಟಮ್ ಪರಿಕರಕ್ಕಾಗಿ ವಿನಂತಿ ಸಲ್ಲಿಸಿ.</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/contact" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors">
+          <span data-i18n="navContact">{t('navContact')}</span>
+        </a>
+        <a href="/request-tool" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold shadow transition-colors">
+          <span data-i18n="navCustomTool">{t('navCustomTool')}</span> →
+        </a>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

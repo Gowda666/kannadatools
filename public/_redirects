@@ -1,0 +1,8 @@
+# Cloudflare Pages Redirects
+# Convenient URL aliases & canonical redirects for KannadaTools
+
+/custom         /request-tool          301
+/custom-tools   /request-tool          301
+/api-plan       /request-tool          301
+/feedback       /contact?type=mistake  302
+/report         /contact?type=mistake  302

@@ -1,0 +1,18 @@
+{
+  "name": "ಕನ್ನಡಟೂಲ್ಸ್ - KannadaTools",
+  "short_name": "KannadaTools",
+  "description": "Free, open-source Kannada digital tools: transliteration, text cleaner, OCR, and speech-to-text.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#c8102e",
+  "lang": "kn",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

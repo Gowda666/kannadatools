@@ -1,0 +1,272 @@
+---
+// Shared "Report a Mistake" feedback modal used by all Kannada tools
+import { t } from '../lib/i18n';
+---
+
+<!-- Report Mistake Modal Backdrop & Dialog -->
+<div
+  id="reportMistakeModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="reportModalTitle"
+  class="fixed inset-0 z-50 hidden overflow-y-auto bg-slate-900/60 backdrop-blur-sm p-4 sm:p-6 md:p-20 flex items-center justify-center transition-opacity"
+>
+  <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all p-6 sm:p-8 space-y-5">
+    
+    <!-- Modal Header -->
+    <div class="flex items-start justify-between">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-xs font-semibold mb-2">
+          <span>ಪ್ರತಿಕ್ರಿಯೆ</span> / Feedback
+        </div>
+        <h3 id="reportModalTitle" class="text-xl font-bold text-slate-900" data-i18n="reportModalTitle">
+          {t('reportModalTitle')}
+        </h3>
+        <p class="text-xs text-slate-500 mt-1" data-i18n="reportModalDesc">
+          {t('reportModalDesc')}
+        </p>
+      </div>
+
+      <!-- Close (X) button -->
+      <button
+        id="closeReportModalBtn"
+        type="button"
+        aria-label="Close modal"
+        class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Submission Form -->
+    <form id="reportMistakeForm" class="space-y-4" action="https://formspree.io/f/placeholder_kannadatools_mistakes" method="POST">
+      
+      <!-- Tool Selection -->
+      <div>
+        <label for="reportToolSelect" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reportToolLabel">
+          {t('reportToolLabel')}
+        </label>
+        <select
+          id="reportToolSelect"
+          name="tool"
+          required
+          class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 bg-white focus:ring-2 focus:ring-red-500 focus:border-red-500 text-slate-800"
+        >
+          <option value="transliterate">ಲಿಪ್ಯಂತರಣ (Transliteration)</option>
+          <option value="cleaner">ಪಠ್ಯ ಶುದ್ಧೀಕರಣ (Text Cleaner)</option>
+          <option value="ocr">ಚಿತ್ರದಿಂದ ಪಠ್ಯ (OCR)</option>
+          <option value="speech">ಧ್ವನಿಯಿಂದ ಪಠ್ಯ (Speech-to-Text)</option>
+          <option value="general">ಸಾಮಾನ್ಯ ತಾಣ ದೋಷ (General / Other)</option>
+        </select>
+      </div>
+
+      <!-- User Input that caused the mistake -->
+      <div>
+        <label for="reportInputText" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reportMistakeInputLabel">
+          {t('reportMistakeInputLabel')}
+        </label>
+        <input
+          type="text"
+          id="reportInputText"
+          name="input_text"
+          placeholder="e.g. 'namaskara' or image description"
+          class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+        />
+      </div>
+
+      <!-- Expected Output -->
+      <div>
+        <label for="reportExpectedText" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reportMistakeExpectedLabel">
+          {t('reportMistakeExpectedLabel')}
+        </label>
+        <input
+          type="text"
+          id="reportExpectedText"
+          name="expected_output"
+          placeholder="e.g. ನಮಸ್ಕಾರ"
+          class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+        />
+      </div>
+
+      <!-- Additional Details -->
+      <div>
+        <label for="reportDetails" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reportMistakeDetailsLabel">
+          {t('reportMistakeDetailsLabel')}
+        </label>
+        <textarea
+          id="reportDetails"
+          name="details"
+          rows="3"
+          placeholder="ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ ಅಥವಾ ವಿವರಣೆ..."
+          class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Optional Email -->
+      <div>
+        <label for="reportEmail" class="block text-xs font-bold text-slate-700 mb-1" data-i18n="reportEmailOptional">
+          {t('reportEmailOptional')}
+        </label>
+        <input
+          type="email"
+          id="reportEmail"
+          name="email"
+          placeholder="name@example.com"
+          class="w-full px-3 py-2 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-red-500 focus:border-red-500"
+        />
+      </div>
+
+      <!-- Submit Action -->
+      <div class="pt-2 flex items-center justify-end gap-3">
+        <button
+          type="button"
+          id="cancelReportModalBtn"
+          class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition-colors"
+          data-i18n="reportCloseBtn"
+        >
+          {t('reportCloseBtn')}
+        </button>
+
+        <button
+          type="submit"
+          id="submitReportBtn"
+          class="px-5 py-2.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow transition-all focus:outline-none focus:ring-2 focus:ring-red-500"
+          data-i18n="reportSubmitBtn"
+        >
+          {t('reportSubmitBtn')}
+        </button>
+      </div>
+    </form>
+
+    <!-- Success Message Card (Hidden initially) -->
+    <div id="reportSuccessState" class="hidden text-center py-6 space-y-3">
+      <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h4 class="text-base font-bold text-slate-900" data-i18n="reportSuccessMsg">
+        {t('reportSuccessMsg')}
+      </h4>
+      <p class="text-xs text-slate-500">
+        ಕನ್ನಡ ಡಿಜಿಟಲ್ ಜಗತ್ತನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ನಿಮ್ಮ ಸಹಕಾರಕ್ಕೆ ವಂದನೆಗಳು!
+      </p>
+      <div class="pt-2">
+        <button
+          type="button"
+          id="dismissReportSuccessBtn"
+          class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800"
+          data-i18n="reportCloseBtn"
+        >
+          {t('reportCloseBtn')}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Global modal control helpers
+  const modal = document.getElementById('reportMistakeModal');
+  const closeBtn = document.getElementById('closeReportModalBtn');
+  const cancelBtn = document.getElementById('cancelReportModalBtn');
+  const form = document.getElementById('reportMistakeForm') as HTMLFormElement | null;
+  const toolSelect = document.getElementById('reportToolSelect') as HTMLSelectElement | null;
+  const successState = document.getElementById('reportSuccessState');
+  const dismissSuccessBtn = document.getElementById('dismissSuccessBtn');
+  const submitBtn = document.getElementById('submitReportBtn');
+
+  export function openReportModal(defaultTool?: string) {
+    if (!modal) return;
+    if (toolSelect && defaultTool) {
+      toolSelect.value = defaultTool;
+    }
+    if (form && successState) {
+      form.classList.remove('hidden');
+      successState.classList.add('hidden');
+    }
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  export function closeReportModal() {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Attach to window object for convenient triggering across all tools
+  (window as any).openReportMistake = openReportModal;
+  (window as any).closeReportMistake = closeReportModal;
+
+  if (closeBtn) closeBtn.addEventListener('click', closeReportModal);
+  if (cancelBtn) cancelBtn.addEventListener('click', closeReportModal);
+  if (dismissSuccessBtn) dismissSuccessBtn.addEventListener('click', closeReportModal);
+
+  // Close when clicking backdrop
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeReportModal();
+    });
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeReportModal();
+    }
+  });
+
+  // Global listener for any link or button with data-report-mistake
+  document.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement)?.closest('[data-report-mistake]');
+    if (target) {
+      e.preventDefault();
+      const tool = target.getAttribute('data-report-mistake') || 'general';
+      openReportModal(tool);
+    }
+  });
+
+  // AJAX submission handler
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitBtn) {
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.textContent = 'ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...';
+      }
+
+      try {
+        const formData = new FormData(form);
+        const actionUrl = form.action;
+
+        // If it's the placeholder Formspree endpoint, simulate success for client-side demo
+        if (actionUrl.includes('placeholder')) {
+          await new Promise((r) => setTimeout(r, 800));
+        } else {
+          await fetch(actionUrl, {
+            method: 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' },
+          });
+        }
+
+        form.reset();
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } catch (err) {
+        // Fallback simulate success
+        form.classList.add('hidden');
+        successState?.classList.remove('hidden');
+      } finally {
+        if (submitBtn) {
+          submitBtn.removeAttribute('disabled');
+          submitBtn.textContent = 'ದೋಷ ವರದಿ ಸಲ್ಲಿಸಿ (Submit Report)';
+        }
+      }
+    });
+  }
+</script>

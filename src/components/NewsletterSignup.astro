@@ -1,0 +1,95 @@
+---
+// Email newsletter signup form component with zero-cost placeholder action URL
+import { t } from '../lib/i18n';
+
+// Placeholder Form action endpoint - can be replaced with Formspree, Web3Forms, or any zero-cost webhook
+const NEWSLETTER_ACTION_URL = "https://formspree.io/f/placeholder_kannadatools_newsletter";
+---
+
+<section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-8 sm:p-12 shadow-xl border border-slate-700">
+  <!-- Subtle decorative background glow in Karnataka red/amber -->
+  <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-red-600/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-amber-500/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-2xl mx-auto text-center space-y-4">
+    <!-- Icon / Badge -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-amber-300 text-xs font-semibold uppercase tracking-wider">
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+      <span data-i18n="newsletterHeading">{t('newsletterHeading')}</span>
+    </div>
+
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" data-i18n="newsletterHeading">
+      {t('newsletterHeading')}
+    </h2>
+
+    <!-- Description -->
+    <p class="text-slate-300 text-sm sm:text-base leading-relaxed" data-i18n="newsletterDesc">
+      {t('newsletterDesc')}
+    </p>
+
+    <!-- Email Form -->
+    <form
+      id="newsletter-form"
+      action={NEWSLETTER_ACTION_URL}
+      method="POST"
+      class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
+    >
+      <label for="newsletter-email" class="sr-only">Email address</label>
+      <input
+        type="email"
+        id="newsletter-email"
+        name="email"
+        required
+        data-i18n-placeholder="newsletterPlaceholder"
+        placeholder={t('newsletterPlaceholder')}
+        class="w-full px-4 py-3 rounded-xl bg-slate-800/90 border border-slate-600 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all"
+      />
+      <button
+        type="submit"
+        id="newsletter-submit-btn"
+        class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-bold text-sm tracking-wide shadow-lg shadow-red-900/30 transition-all hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-amber-400 flex items-center justify-center gap-2 cursor-pointer whitespace-nowrap"
+      >
+        <span data-i18n="newsletterButton">{t('newsletterButton')}</span>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </button>
+    </form>
+
+    <!-- Success Message Container -->
+    <div id="newsletter-success" class="hidden mt-4 p-3 bg-emerald-900/50 border border-emerald-500/50 rounded-xl text-emerald-200 text-sm">
+      <span data-i18n="newsletterSuccess">{t('newsletterSuccess')}</span>
+    </div>
+
+    <!-- Privacy Note -->
+    <p class="text-xs text-slate-400 pt-2" data-i18n="newsletterPrivacy">
+      {t('newsletterPrivacy')}
+    </p>
+  </div>
+</section>
+
+<script>
+  // Client-side submission handling
+  const form = document.getElementById('newsletter-form') as HTMLFormElement | null;
+  const successBox = document.getElementById('newsletter-success');
+  const emailInput = document.getElementById('newsletter-email') as HTMLInputElement | null;
+  const submitBtn = document.getElementById('newsletter-submit-btn');
+
+  if (form && successBox && emailInput && submitBtn) {
+    form.addEventListener('submit', (e) => {
+      // If placeholder URL is intact, show clean client feedback
+      if (form.action.includes('placeholder_kannadatools')) {
+        e.preventDefault();
+        successBox.classList.remove('hidden');
+        emailInput.value = '';
+        setTimeout(() => {
+          successBox.classList.add('hidden');
+        }, 5000);
+      }
+    });
+  }
+</script>
+

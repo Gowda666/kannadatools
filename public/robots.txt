@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+# All search crawlers are welcome to index KannadaTools
+User-agent: *
+Allow: /
+
+# Canonical XML Sitemap
+Sitemap: https://kannadatools.pages.dev/sitemap.xml

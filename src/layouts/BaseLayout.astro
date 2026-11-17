@@ -1,0 +1,176 @@
+---
+// BaseLayout for KannadaTools - fast, mobile-friendly, accessible, zero-cost static
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ReportMistakeModal from '../components/ReportMistakeModal.astro';
+import '../styles/global.css';
+import { translations, t, type Language } from '../lib/i18n';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Language;
+  image?: string;
+}
+
+const {
+  title = 'ಕನ್ನಡಟೂಲ್ಸ್ - ಉಚಿತ ಕನ್ನಡ ಡಿಜಿಟಲ್ ಉಪಕರಣಗಳು | KannadaTools',
+  description = 'ಕನ್ನಡ ಲಿಪ್ಯಂತರಣ, ಪಠ್ಯ ಶುದ್ಧೀಕರಣ, ಚಿತ್ರದಿಂದ ಪಠ್ಯ (OCR) ಮತ್ತು ಧ್ವನಿಯಿಂದ ಪಠ್ಯ - ೧೦೦% ಉಚಿತ ಮತ್ತು ಮುಕ್ತ ಡಿಜಿಟಲ್ ಉಪಕರಣಗಳು.',
+  lang = 'kn',
+  image = '/og-image.svg',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://kannadatools.pages.dev').href;
+const socialImageUrl = new URL(image, Astro.site || 'https://kannadatools.pages.dev').href;
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#c8102e" />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="Kannada tools, Kannada transliteration, Kannada OCR, text cleaner, Kannada Unicode, Kannada speech to text, Nudi Baraha to Unicode, Kannada Whisper AI" />
+    <meta name="author" content="KannadaTools Open Source Contributors" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:site_name" content="KannadaTools (ಕನ್ನಡಟೂಲ್ಸ್)" />
+    <meta property="og:locale" content="kn_IN" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={socialImageUrl} />
+
+    <!-- Favicon & PWA Webmanifest -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Google Fonts Preconnect & Noto Sans Kannada Webfont (No tofu / empty boxes) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-kannada antialiased selection:bg-red-500 selection:text-white">
+    <!-- Skip to main content link for screen readers and keyboard users -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-red-600 focus:text-white focus:rounded-xl focus:font-bold focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white"
+    >
+      ಮುಖ್ಯ ವಿಷಯಕ್ಕೆ ತೆರಳಿ (Skip to main content)
+    </a>
+
+    <!-- Base Layout Header with Navigation & Language Switcher -->
+    <Header />
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Base Layout Footer -->
+    <Footer />
+
+    <!-- Shared Report a Mistake Feedback Modal -->
+    <ReportMistakeModal />
+
+    <!-- Client-side i18n hydration script: instant toggle without page reload -->
+    <script define:vars={{ translationsData: translations }}>
+      (function () {
+        const STORAGE_KEY = 'kannadatools_lang';
+
+        function getSavedLang() {
+          try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            return saved === 'en' ? 'en' : 'kn';
+          } catch (e) {
+            return 'kn';
+          }
+        }
+
+        function setLang(lang) {
+          try {
+            localStorage.setItem(STORAGE_KEY, lang);
+          } catch (e) {}
+
+          document.documentElement.lang = lang;
+
+          // Update toggle button text (shows the alternative language to switch to)
+          const toggleText = document.getElementById('lang-toggle-text');
+          if (toggleText) {
+            toggleText.textContent = lang === 'kn' ? 'English' : 'ಕನ್ನಡ';
+          }
+
+          // Update all elements with data-i18n
+          const translatableElements = document.querySelectorAll('[data-i18n]');
+          translatableElements.forEach((el) => {
+            const key = el.getAttribute('data-i18n');
+            if (key && translationsData[key]) {
+              const val = translationsData[key][lang] || translationsData[key]['kn'];
+              if (val) {
+                el.textContent = val;
+              }
+            }
+          });
+
+          // Update any elements with data-i18n-placeholder
+          const inputElements = document.querySelectorAll('[data-i18n-placeholder]');
+          inputElements.forEach((el) => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (key && translationsData[key]) {
+              const val = translationsData[key][lang] || translationsData[key]['kn'];
+              if (val) {
+                el.setAttribute('placeholder', val);
+              }
+            }
+          });
+
+          // Dispatch event for any interactive client tool
+          window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
+        }
+
+        // Initialize on load
+        const initialLang = getSavedLang();
+        setLang(initialLang);
+
+        // Bind toggle button click
+        document.addEventListener('DOMContentLoaded', () => {
+          const btn = document.getElementById('lang-toggle-btn');
+          if (btn) {
+            btn.addEventListener('click', () => {
+              const current = getSavedLang();
+              const next = current === 'kn' ? 'en' : 'kn';
+              setLang(next);
+            });
+          }
+        });
+
+        // Global helper for interactive components
+        window.kannadaTools = {
+          getLang: getSavedLang,
+          setLang: setLang,
+          translations: translationsData,
+        };
+      })();
+    </script>
+  </body>
+</html>
+

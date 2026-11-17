@@ -1,0 +1,134 @@
+---
+// Phase 5 Home Page for KannadaTools
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ಕನ್ನಡಟೂಲ್ಸ್ - ಉಚಿತ ಕನ್ನಡ ಪರಿಕರಗಳು: ಮಾತನಾಡಿ, ಸ್ಕ್ಯಾನ್ ಮಾಡಿ, ಟೈಪ್ ಮಾಡಿ, ಶುದ್ಧಗೊಳಿಸಿ | KannadaTools"
+  description="Free Kannada tools: speak, scan, type, clean. 100% free, browser-based transliteration, text cleaning, OCR, and speech-to-text with zero server costs."
+>
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-12 text-center">
+    
+    <!-- Open Source & Free Badge -->
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-50 text-red-700 text-xs sm:text-sm font-semibold border border-red-200/80 mb-6 shadow-sm">
+      <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+      <span data-i18n="openSourceBadge">{t('openSourceBadge')}</span>
+      <span class="text-red-400">|</span>
+      <span>Zero Server Cost</span>
+    </div>
+
+    <!-- Main Headline with authentic Kannada & English -->
+    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight sm:leading-snug max-w-4xl mx-auto">
+      <span class="block text-slate-900" data-i18n="homeHeadline">
+        {t('homeHeadline')}
+      </span>
+    </h1>
+
+    <!-- Short Description -->
+    <p class="mt-5 sm:mt-7 text-base sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed" data-i18n="homeSubhead">
+      {t('homeSubhead')}
+    </p>
+
+    <!-- Quick highlights bar: Browser Only, No Login, 100% Free -->
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm font-medium text-slate-500">
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>ಬ್ರೌಸರ್‌ನಲ್ಲೇ ರನ್ ಆಗುತ್ತದೆ (Browser-only)</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>ಯಾವುದೇ ಲಾಗಿನ್ ಇಲ್ಲ (No account required)</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>ಖಾಸಗಿತನ ರಕ್ಷಣೆ (Privacy First)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Four Tool Cards Grid Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+      
+      <!-- 1. Transliteration Tool Card (LIVE - Built in Phase 3) -->
+      <ToolCard
+        href="/transliterate"
+        titleKey="toolTransliterateTitle"
+        descKey="toolTransliterateDesc"
+        iconType="transliterate"
+        accentColor="red"
+        isComingSoon={false}
+      />
+
+      <!-- 2. Text Cleaner Tool Card (LIVE - Built in Phase 4) -->
+      <ToolCard
+        href="/cleaner"
+        titleKey="toolCleanerTitle"
+        descKey="toolCleanerDesc"
+        iconType="cleaner"
+        accentColor="amber"
+        isComingSoon={false}
+      />
+
+      <!-- 3. OCR (Image to Text) Tool Card (LIVE - Built in Phase 5) -->
+      <ToolCard
+        href="/ocr"
+        titleKey="toolOcrTitle"
+        descKey="toolOcrDesc"
+        iconType="ocr"
+        accentColor="emerald"
+        isComingSoon={false}
+      />
+
+      <!-- 4. Speech-to-Text Tool Card (LIVE - Built in Phase 6) -->
+      <ToolCard
+        href="/speech"
+        titleKey="toolSpeechTitle"
+        descKey="toolSpeechDesc"
+        iconType="speech"
+        accentColor="blue"
+        isComingSoon={false}
+      />
+
+    </div>
+  </section>
+
+  <!-- Email Signup / Newsletter Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <NewsletterSignup />
+  </section>
+
+  <!-- Future Monetization & Custom Request Banner -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <div class="p-6 sm:p-8 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 text-amber-800 text-xs font-bold uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          <span>ಕಸ್ಟಮ್ ಪರಿಹಾರಗಳು / Custom Solutions & APIs</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900" data-i18n="customRequestHeading">
+          {t('customRequestHeading')}
+        </h3>
+        <p class="text-sm text-slate-600 max-w-xl leading-relaxed" data-i18n="customRequestDesc">
+          {t('customRequestDesc')}
+        </p>
+      </div>
+      <a
+        href="/request-tool"
+        class="shrink-0 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-900"
+      >
+        <span data-i18n="customRequestBtn">{t('customRequestBtn')}</span> →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

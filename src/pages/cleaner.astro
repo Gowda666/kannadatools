@@ -1,0 +1,376 @@
+---
+// Phase 4: Kannada Text Cleaner (/cleaner)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+---
+
+<BaseLayout
+  title="ಕನ್ನಡ ಪಠ್ಯ ಶುದ್ಧೀಕರಣ - ಕನ್ನಡಟೂಲ್ಸ್ | Kannada Text Cleaner & Unicode Normalizer"
+  description="Clean Kannada text, fix broken Unicode, normalize spaces, tabs and empty lines, fix punctuation, and convert legacy Nudi/Baraha font text directly in your browser."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- Top Header -->
+    <div class="mb-8 border-b border-slate-200 pb-6 text-center sm:text-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-semibold uppercase tracking-wider mb-2 border border-amber-300">
+        <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+        <span>೧೦೦% ಬ್ರೌಸರ್-ಮಾತ್ರ / Zero Server Latency</span>
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight" data-i18n="cleanerHeading">
+        {t('cleanerHeading')}
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-3xl" data-i18n="cleanerSubheading">
+        {t('cleanerSubheading')}
+      </p>
+    </div>
+
+    <!-- Options Selection Panel (Responsive Grid) -->
+    <div class="mb-6 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          <span>ಶುದ್ಧೀಕರಣದ ಆಯ್ಕೆಗಳು (Cleaning Options)</span>
+        </h2>
+        <span class="text-xs text-slate-500 hidden sm:inline">ನೈಜ ಸಮಯದಲ್ಲಿ ನವೀಕರಣಗೊಳ್ಳುತ್ತದೆ (Updates live)</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 1. Fix Broken Unicode -->
+        <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50/50 cursor-pointer transition-all">
+          <input
+            type="checkbox"
+            id="opt-unicode"
+            checked
+            class="mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500"
+          />
+          <div>
+            <div class="text-xs font-bold text-slate-900" data-i18n="optFixUnicode">
+              {t('optFixUnicode')}
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5 leading-normal" data-i18n="optFixUnicodeDesc">
+              {t('optFixUnicodeDesc')}
+            </p>
+          </div>
+        </label>
+
+        <!-- 2. Clean Whitespace -->
+        <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50/50 cursor-pointer transition-all">
+          <input
+            type="checkbox"
+            id="opt-whitespace"
+            checked
+            class="mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500"
+          />
+          <div>
+            <div class="text-xs font-bold text-slate-900" data-i18n="optCleanWhitespace">
+              {t('optCleanWhitespace')}
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5 leading-normal" data-i18n="optCleanWhitespaceDesc">
+              {t('optCleanWhitespaceDesc')}
+            </p>
+          </div>
+        </label>
+
+        <!-- 3. Normalize Punctuation -->
+        <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-amber-400 bg-slate-50/50 cursor-pointer transition-all">
+          <input
+            type="checkbox"
+            id="opt-punctuation"
+            checked
+            class="mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500"
+          />
+          <div>
+            <div class="text-xs font-bold text-slate-900" data-i18n="optNormalizePunctuation">
+              {t('optNormalizePunctuation')}
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5 leading-normal" data-i18n="optNormalizePunctuationDesc">
+              {t('optNormalizePunctuationDesc')}
+            </p>
+          </div>
+        </label>
+
+        <!-- 4. Convert Legacy Nudi/Baraha (Beta) -->
+        <label class="flex items-start gap-3 p-3 rounded-xl border border-amber-300/80 bg-amber-50/30 hover:border-amber-500 cursor-pointer transition-all">
+          <input
+            type="checkbox"
+            id="opt-legacy"
+            class="mt-1 w-4 h-4 text-amber-600 rounded border-slate-300 focus:ring-amber-500"
+          />
+          <div>
+            <div class="flex items-center gap-1.5 text-xs font-bold text-amber-950">
+              <span data-i18n="optConvertLegacy">{t('optConvertLegacy')}</span>
+              <span class="px-1.5 py-0.2 rounded text-[10px] bg-amber-200 text-amber-900 font-extrabold uppercase">
+                Beta
+              </span>
+            </div>
+            <p class="text-[11px] text-amber-900/80 mt-0.5 leading-normal" data-i18n="optConvertLegacyDesc">
+              {t('optConvertLegacyDesc')}
+            </p>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Quick Example Samples to Test Options -->
+    <div class="mb-6 flex flex-wrap items-center gap-2 text-xs">
+      <span class="font-bold text-slate-500 uppercase tracking-wider mr-1">ಪರೀಕ್ಷಾ ಮಾದರಿಗಳು (Sample Texts):</span>
+      <button
+        type="button"
+        class="sample-btn px-3 py-1 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-700 font-medium transition-colors shadow-sm"
+        data-sample="  “ಕನ್ನಡ”   ನಾಡು   , ಮತ್ತು    ನುಡಿ  ! ! \n\n\n\n  ಸಿರಿಗನ್ನಡಂ   ಗೆಲ್ಗೆ  "
+      >
+        Messy Spaces & Quotes
+      </button>
+      <button
+        type="button"
+        class="sample-btn px-3 py-1 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-700 font-medium transition-colors shadow-sm"
+        data-sample="ಕನ್ನಡಾಾ ಸಾಹಿತ್ಯ್್ ಸಮ್ಮೇಳನ  ,ಬೆಂಗಳೂರು  ."
+      >
+        Broken Unicode (Duplicate Matras)
+      </button>
+      <button
+        type="button"
+        class="sample-btn px-3 py-1 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-lg text-amber-900 font-medium transition-colors shadow-sm"
+        data-sample="PÁj"
+        data-enable-legacy="true"
+      >
+        Legacy Nudi ASCII Sample (Beta)
+      </button>
+    </div>
+
+    <!-- Side-by-Side Before / After Split View -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Left Box: Before (Original Input) -->
+      <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden focus-within:border-slate-400 transition-all">
+        <div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-700">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
+            <span data-i18n="cleanerBeforeLabel">{t('cleanerBeforeLabel')}</span>
+          </div>
+
+          <!-- Clear Button -->
+          <button
+            id="cleaner-clear-btn"
+            type="button"
+            class="text-slate-500 hover:text-red-600 transition-colors flex items-center gap-1 font-semibold focus:outline-none"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            <span data-i18n="clearBtn">{t('clearBtn')}</span>
+          </button>
+        </div>
+
+        <textarea
+          id="cleaner-input"
+          rows="12"
+          class="w-full p-4 text-base sm:text-lg text-slate-900 bg-transparent resize-y focus:outline-none placeholder-slate-400 font-kannada leading-relaxed"
+          data-i18n-placeholder="cleanerInputPlaceholder"
+          placeholder={t('cleanerInputPlaceholder')}
+          autofocus
+        ></textarea>
+
+        <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+          <span>ಮೂಲ ಅಕ್ಷರಗಳು: <strong id="before-char-count">0</strong></span>
+          <span>ಸಾಲುಗಳು: <strong id="before-line-count">0</strong></span>
+        </div>
+      </div>
+
+      <!-- Right Box: After (Cleaned Output) -->
+      <div class="flex flex-col bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden focus-within:border-emerald-500 transition-all">
+        <div class="flex items-center justify-between px-4 py-3 bg-emerald-50/70 border-b border-emerald-100 text-xs font-semibold text-emerald-950">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span data-i18n="cleanerAfterLabel">{t('cleanerAfterLabel')}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Copy Cleaned Text Button -->
+            <button
+              id="cleaner-copy-btn"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <span id="cleaner-copy-text" data-i18n="copyBtn">{t('copyBtn')}</span>
+            </button>
+          </div>
+        </div>
+
+        <textarea
+          id="cleaner-output"
+          rows="12"
+          class="w-full p-4 text-base sm:text-lg text-slate-900 bg-emerald-50/10 resize-y focus:outline-none placeholder-slate-400 font-kannada leading-relaxed"
+          data-i18n-placeholder="cleanerOutputPlaceholder"
+          placeholder={t('cleanerOutputPlaceholder')}
+        ></textarea>
+
+        <div class="px-4 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+          <span>ಶುದ್ಧ ಅಕ್ಷರಗಳು: <strong id="after-char-count">0</strong></span>
+          <span id="savings-badge" class="hidden text-emerald-700 font-sans font-semibold"></span>
+          <span>ಸಾಲುಗಳು: <strong id="after-line-count">0</strong></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Manual trigger button & note -->
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-100/80 border border-slate-200 text-xs text-slate-600">
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+        </svg>
+        <span>ಯಾವುದೇ ಡೇಟಾ ಸರ್ವರ್‌ಗೆ ರವಾನೆಯಾಗುವುದಿಲ್ಲ. ಸಂಪೂರ್ಣವಾಗಿ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲೇ ಕ್ಷಣಮಾತ್ರದಲ್ಲಿ ಸಂಸ್ಕರಿಸಲ್ಪಡುತ್ತದೆ.</span>
+        <span class="text-slate-400">|</span>
+        <a
+          href="/contact?type=mistake"
+          data-report-mistake="cleaner"
+          class="font-semibold text-amber-700 hover:text-amber-800 underline transition-colors"
+          data-i18n="reportMistake"
+        >
+          {t('reportMistake')}
+        </a>
+      </div>
+
+      <button
+        id="clean-now-btn"
+        type="button"
+        class="w-full sm:w-auto px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-900"
+      >
+        <span data-i18n="cleanNowBtn">{t('cleanNowBtn')}</span>
+      </button>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<script>
+  import { cleanKannadaText, type CleanerOptions } from '../lib/cleaner';
+
+  const inputEl = document.getElementById('cleaner-input') as HTMLTextAreaElement | null;
+  const outputEl = document.getElementById('cleaner-output') as HTMLTextAreaElement | null;
+  const optUnicode = document.getElementById('opt-unicode') as HTMLInputElement | null;
+  const optWhitespace = document.getElementById('opt-whitespace') as HTMLInputElement | null;
+  const optPunctuation = document.getElementById('opt-punctuation') as HTMLInputElement | null;
+  const optLegacy = document.getElementById('opt-legacy') as HTMLInputElement | null;
+  const clearBtn = document.getElementById('cleaner-clear-btn');
+  const copyBtn = document.getElementById('cleaner-copy-btn');
+  const copyText = document.getElementById('cleaner-copy-text');
+  const cleanNowBtn = document.getElementById('clean-now-btn');
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+
+  const beforeCharCount = document.getElementById('before-char-count');
+  const beforeLineCount = document.getElementById('before-line-count');
+  const afterCharCount = document.getElementById('after-char-count');
+  const afterLineCount = document.getElementById('after-line-count');
+  const savingsBadge = document.getElementById('savings-badge');
+
+  function getOptions(): CleanerOptions {
+    return {
+      fixUnicode: optUnicode ? optUnicode.checked : true,
+      cleanWhitespace: optWhitespace ? optWhitespace.checked : true,
+      normalizePunctuation: optPunctuation ? optPunctuation.checked : true,
+      convertLegacy: optLegacy ? optLegacy.checked : false,
+    };
+  }
+
+  function runCleaning() {
+    if (!inputEl || !outputEl) return;
+    const raw = inputEl.value;
+    const options = getOptions();
+    const cleaned = cleanKannadaText(raw, options);
+    outputEl.value = cleaned;
+
+    // Update stats
+    const inLen = raw.length;
+    const outLen = cleaned.length;
+    const inLines = raw ? raw.split('\n').length : 0;
+    const outLines = cleaned ? cleaned.split('\n').length : 0;
+
+    if (beforeCharCount) beforeCharCount.textContent = String(inLen);
+    if (beforeLineCount) beforeLineCount.textContent = String(inLines);
+    if (afterCharCount) afterCharCount.textContent = String(outLen);
+    if (afterLineCount) afterLineCount.textContent = String(outLines);
+
+    if (savingsBadge) {
+      if (inLen > outLen && inLen > 0) {
+        savingsBadge.textContent = `✓ ${inLen - outLen} ಅಕ್ಷರಗಳ ಕಡಿತ (${Math.round(((inLen - outLen) / inLen) * 100)}% ಉಳಿತಾಯ)`;
+        savingsBadge.classList.remove('hidden');
+      } else {
+        savingsBadge.classList.add('hidden');
+      }
+    }
+  }
+
+  // Live event listeners
+  if (inputEl) {
+    inputEl.addEventListener('input', runCleaning);
+  }
+
+  [optUnicode, optWhitespace, optPunctuation, optLegacy].forEach((cb) => {
+    if (cb) {
+      cb.addEventListener('change', runCleaning);
+    }
+  });
+
+  if (cleanNowBtn) {
+    cleanNowBtn.addEventListener('click', runCleaning);
+  }
+
+  // Clear button
+  if (clearBtn && inputEl && outputEl) {
+    clearBtn.addEventListener('click', () => {
+      inputEl.value = '';
+      outputEl.value = '';
+      runCleaning();
+      inputEl.focus();
+    });
+  }
+
+  // Copy button
+  if (copyBtn && outputEl && copyText) {
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = outputEl.value;
+      if (!textToCopy) return;
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        const original = copyText.textContent;
+        copyText.textContent = 'ನಕಲಿಸಲಾಗಿದೆ! (Copied!)';
+        copyBtn.classList.replace('bg-emerald-600', 'bg-emerald-700');
+        setTimeout(() => {
+          copyText.textContent = original;
+          copyBtn.classList.replace('bg-emerald-700', 'bg-emerald-600');
+        }, 2000);
+      } catch (err) {
+        outputEl.select();
+        document.execCommand('copy');
+      }
+    });
+  }
+
+  // Sample buttons
+  sampleBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      let sample = btn.getAttribute('data-sample');
+      if (sample && inputEl) {
+        // Unescape literal \n from data-sample
+        sample = sample.replace(/\\n/g, '\n');
+        inputEl.value = sample;
+
+        const enableLegacy = btn.getAttribute('data-enable-legacy') === 'true';
+        if (optLegacy) {
+          optLegacy.checked = enableLegacy;
+        }
+
+        runCleaning();
+        inputEl.focus();
+      }
+    });
+  });
+</script>

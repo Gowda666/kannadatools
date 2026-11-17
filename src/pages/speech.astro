@@ -1,0 +1,674 @@
+---
+// Phase 6: Speech-to-Text Tool (/speech)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t } from '../lib/i18n';
+
+// Read Hugging Face Space URL from environment variable, or fallback to placeholder
+const hfSpaceUrl = import.meta.env.PUBLIC_HF_SPACE_URL || 'https://your-username-kannada-stt.hf.space';
+---
+
+<BaseLayout
+  title="ಧ್ವನಿಯಿಂದ ಪಠ್ಯ (Speech-to-Text) - ಕನ್ನಡಟೂಲ್ಸ್ | Kannada Speech to Text"
+  description="Free Kannada speech-to-text tool. Transcribe spoken Kannada audio or voice recordings into written text using free open-source Whisper AI models."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- Top Header & Banner -->
+    <div class="mb-8 border-b border-slate-200 pb-6 text-center sm:text-left">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-semibold uppercase tracking-wider mb-2 border border-blue-300">
+        <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+        <span>ಕನ್ನಡ Whisper AI / ಉಚಿತ ASR</span>
+      </div>
+      <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight" data-i18n="speechHeading">
+        {t('speechHeading')}
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl" data-i18n="speechSubheading">
+        {t('speechSubheading')}
+      </p>
+
+      <!-- Max Duration Note -->
+      <div class="mt-4 inline-flex items-center gap-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-medium">
+        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span data-i18n="speechMaxDurationNote">{t('speechMaxDurationNote')}</span>
+      </div>
+    </div>
+
+    <!-- Main Two-Column Workflow -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      
+      <!-- Left Column: Audio Input & Recording -->
+      <div class="space-y-6">
+        
+        <!-- Upload Card -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-5">
+          <div class="flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+              </svg>
+              <span>ಆಡಿಯೋ ಆಯ್ಕೆ / ರೆಕಾರ್ಡ್ (Audio Input)</span>
+            </h2>
+
+            <!-- Sample Audio Button -->
+            <button
+              id="trySampleAudioBtn"
+              type="button"
+              class="text-xs font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 transition-colors"
+              data-i18n="speechDemoAudioBtn"
+            >
+              {t('speechDemoAudioBtn')}
+            </button>
+          </div>
+
+          <!-- Drag and Drop Area -->
+          <div
+            id="dropArea"
+            class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-blue-50/30 group"
+          >
+            <input
+              type="file"
+              id="audioFileInput"
+              accept="audio/*,.mp3,.wav,.ogg,.m4a,.webm,.aac,.flac"
+              class="hidden"
+            />
+            
+            <div class="space-y-3">
+              <div class="w-12 h-12 mx-auto rounded-full bg-blue-100 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+
+              <div>
+                <p class="text-sm font-semibold text-slate-800" data-i18n="audioUploadLabel">
+                  {t('audioUploadLabel')}
+                </p>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="audioUploadSubtitle">
+                  {t('audioUploadSubtitle')}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                id="selectAudioBtn"
+                class="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-800 border border-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-50 transition-colors shadow-sm"
+                data-i18n="selectAudioBtn"
+              >
+                {t('selectAudioBtn')}
+              </button>
+            </div>
+          </div>
+
+          <!-- Direct Microphone Recording Bar -->
+          <div class="pt-2 border-t border-slate-100">
+            <div class="flex items-center justify-between gap-4">
+              <button
+                type="button"
+                id="recordVoiceBtn"
+                class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs sm:text-sm font-semibold transition-all border border-slate-300 shadow-sm"
+              >
+                <span id="recordMicIcon" class="w-3 h-3 rounded-full bg-red-600"></span>
+                <span id="recordBtnLabel" data-i18n="recordVoiceBtn">{t('recordVoiceBtn')}</span>
+              </button>
+              
+              <!-- Recording Timer Display -->
+              <span id="recordTimer" class="hidden text-xs font-mono font-bold text-red-600 px-3 py-1 bg-red-50 rounded-lg border border-red-200">
+                00:00 / 02:00
+              </span>
+            </div>
+          </div>
+
+          <!-- Audio Preview & Metadata Card -->
+          <div id="audioPreviewContainer" class="hidden space-y-3 pt-3 border-t border-slate-200">
+            <div class="flex items-center justify-between text-xs text-slate-600">
+              <span id="audioFileName" class="font-medium truncate max-w-[200px]">audio.wav</span>
+              <span id="audioDurationText" class="font-mono bg-slate-100 px-2 py-0.5 rounded text-slate-700">--:--</span>
+            </div>
+
+            <!-- Native Audio Player Preview -->
+            <audio id="audioPreviewPlayer" controls class="w-full h-10 rounded-lg"></audio>
+
+            <!-- Duration Warning (if > 2 min) -->
+            <div id="durationWarning" class="hidden p-3 bg-red-50 text-red-800 border border-red-200 rounded-xl text-xs font-medium">
+              ಎಚ್ಚರಿಕೆ: ಆಡಿಯೋ ಅವಧಿ ೨ ನಿಮಿಷಕ್ಕಿಂತ ಹೆಚ್ಚಾಗಿದೆ. ಪರಿವರ್ತನೆಯು ವಿಫಲವಾಗಬಹುದು.
+            </div>
+          </div>
+
+          <!-- Primary Transcribe Action Button -->
+          <button
+            type="button"
+            id="startTranscribeBtn"
+            disabled
+            class="w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z" />
+            </svg>
+            <span data-i18n="startTranscribeBtn">{t('startTranscribeBtn')}</span>
+          </button>
+
+          <!-- Free Hosting Slow-Notice Alert -->
+          <div class="p-4 rounded-xl bg-blue-50/70 border border-blue-200/80 text-blue-900 text-xs leading-relaxed space-y-1">
+            <div class="flex items-center gap-2 font-bold text-blue-950">
+              <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>ಉಚಿತ ಹೋಸ್ಟಿಂಗ್ ಮಾಹಿತಿ (Free Hosting Notice)</span>
+            </div>
+            <p data-i18n="speechLoadingNote">{t('speechLoadingNote')}</p>
+          </div>
+
+          <!-- Status & Progress Indicator -->
+          <div id="statusBox" class="hidden p-4 rounded-xl border transition-all text-xs space-y-2">
+            <div class="flex items-center gap-2 font-medium">
+              <div id="statusSpinner" class="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+              <span id="statusMessage">ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ...</span>
+            </div>
+            <div id="retrySection" class="hidden pt-2">
+              <button
+                type="button"
+                id="retryBtn"
+                class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold"
+              >
+                ಪುನಃ ಪ್ರಯತ್ನಿಸಿ (Retry)
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Extracted Editable Kannada Text Output -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <label for="speechOutput" class="text-sm font-bold text-slate-800" data-i18n="speechOutputLabel">
+              {t('speechOutputLabel')}
+            </label>
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+              <span><span id="charCount">0</span> ಅಕ್ಷರಗಳು</span>
+              <span>•</span>
+              <span><span id="wordCount">0</span> ಪದಗಳು</span>
+            </div>
+          </div>
+
+          <!-- Output Textarea -->
+          <div class="relative">
+            <textarea
+              id="speechOutput"
+              rows="12"
+              class="w-full p-4 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 text-base leading-relaxed resize-y kn-text"
+              placeholder={t('speechOutputPlaceholder')}
+              data-i18n="speechOutputPlaceholder"
+            ></textarea>
+          </div>
+
+          <!-- Actions Toolbar -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+            <div class="flex items-center gap-2">
+              <!-- Copy Button -->
+              <button
+                type="button"
+                id="copyBtn"
+                class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
+              >
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                <span id="copyBtnText" data-i18n="copyBtn">{t('copyBtn')}</span>
+              </button>
+
+              <!-- Download Button -->
+              <button
+                type="button"
+                id="downloadBtn"
+                class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold border border-slate-300 transition-colors"
+                data-i18n="downloadTxtBtn"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span>{t('downloadTxtBtn')}</span>
+              </button>
+            </div>
+
+            <!-- Clear Button -->
+            <button
+              type="button"
+              id="clearBtn"
+              class="text-xs text-slate-500 hover:text-red-600 font-semibold transition-colors"
+              data-i18n="clearBtn"
+            >
+              {t('clearBtn')}
+            </button>
+          </div>
+
+          <!-- Report Mistake & Privacy Notes -->
+          <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
+            <span data-i18n="speechPrivacyNote">{t('speechPrivacyNote')}</span>
+            <a
+              href="/contact?type=mistake&tool=speech"
+              data-report-mistake="speech"
+              class="text-blue-600 hover:underline font-medium shrink-0"
+              data-i18n="reportMistake"
+            >
+              {t('reportMistake')} →
+            </a>
+          </div>
+        </div>
+
+        <!-- Technical Model Specs Badge -->
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs text-slate-600 space-y-2">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <span>ತಂತ್ರಜ್ಞಾನ ವಿವರಣೆ / Technology Specs:</span>
+          </div>
+          <p>
+            Powered by <strong>vasista22/whisper-kannada-base</strong> &mdash; an open-source OpenAI Whisper model fine-tuned on the Kannada Mozilla Common Voice dataset.
+          </p>
+          <div class="flex items-center gap-3 pt-1">
+            <span class="inline-flex items-center gap-1 font-mono text-[11px] bg-white border border-slate-200 px-2 py-0.5 rounded">
+              HF Space: <span class="text-blue-600 font-semibold">{hfSpaceUrl ? 'Configured' : 'Default'}</span>
+            </span>
+            <a
+              href="https://huggingface.co/vasista22/whisper-kannada-base"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-blue-600 hover:underline font-medium"
+            >
+              Hugging Face Model Card ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ hfSpaceUrl }}>
+  import {
+    validateAudioFile,
+    formatSpeechStatus,
+    transcribeAudio,
+    MAX_AUDIO_DURATION_SECONDS,
+  } from '../lib/speech';
+  import { downloadTextAsFile } from '../lib/ocr';
+
+  // DOM Elements
+  const dropArea = document.getElementById('dropArea');
+  const audioFileInput = document.getElementById('audioFileInput');
+  const selectAudioBtn = document.getElementById('selectAudioBtn');
+  const recordVoiceBtn = document.getElementById('recordVoiceBtn');
+  const recordMicIcon = document.getElementById('recordMicIcon');
+  const recordBtnLabel = document.getElementById('recordBtnLabel');
+  const recordTimer = document.getElementById('recordTimer');
+  const audioPreviewContainer = document.getElementById('audioPreviewContainer');
+  const audioPreviewPlayer = document.getElementById('audioPreviewPlayer');
+  const audioFileName = document.getElementById('audioFileName');
+  const audioDurationText = document.getElementById('audioDurationText');
+  const durationWarning = document.getElementById('durationWarning');
+  const startTranscribeBtn = document.getElementById('startTranscribeBtn');
+  const trySampleAudioBtn = document.getElementById('trySampleAudioBtn');
+  const statusBox = document.getElementById('statusBox');
+  const statusSpinner = document.getElementById('statusSpinner');
+  const statusMessage = document.getElementById('statusMessage');
+  const retrySection = document.getElementById('retrySection');
+  const retryBtn = document.getElementById('retryBtn');
+  const speechOutput = document.getElementById('speechOutput');
+  const charCount = document.getElementById('charCount');
+  const wordCount = document.getElementById('wordCount');
+  const copyBtn = document.getElementById('copyBtn');
+  const copyBtnText = document.getElementById('copyBtnText');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const clearBtn = document.getElementById('clearBtn');
+
+  // State
+  let currentAudioBlob = null;
+  let isRecording = false;
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let recordInterval = null;
+  let recordSeconds = 0;
+  let isTranscribing = false;
+
+  function getCurrentLang() {
+    return window.kannadaTools?.getLanguage() || 'kn';
+  }
+
+  // File Picker triggers
+  if (selectAudioBtn && audioFileInput) {
+    selectAudioBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      audioFileInput.click();
+    });
+  }
+
+  if (dropArea && audioFileInput) {
+    dropArea.addEventListener('click', () => {
+      audioFileInput.click();
+    });
+
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      dropArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropArea.classList.add('border-blue-500', 'bg-blue-50/40');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((eventName) => {
+      dropArea.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('border-blue-500', 'bg-blue-50/40');
+      });
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
+        handleSelectedAudioFile(files[0]);
+      }
+    });
+  }
+
+  if (audioFileInput) {
+    audioFileInput.addEventListener('change', () => {
+      if (audioFileInput.files && audioFileInput.files[0]) {
+        handleSelectedAudioFile(audioFileInput.files[0]);
+      }
+    });
+  }
+
+  function handleSelectedAudioFile(file) {
+    const val = validateAudioFile(file);
+    if (!val.valid) {
+      alert(getCurrentLang() === 'kn' ? val.error?.kn : val.error?.en);
+      return;
+    }
+
+    currentAudioBlob = file;
+    displayAudioPreview(file, file.name || 'audio-file.wav');
+  }
+
+  function displayAudioPreview(blob, filename) {
+    if (!audioPreviewContainer || !audioPreviewPlayer) return;
+    const url = URL.createObjectURL(blob);
+    audioPreviewPlayer.src = url;
+    audioPreviewContainer.classList.remove('hidden');
+    if (audioFileName) audioFileName.textContent = filename;
+
+    // Detect duration
+    audioPreviewPlayer.onloadedmetadata = () => {
+      const duration = audioPreviewPlayer.duration;
+      const mins = Math.floor(duration / 60);
+      const secs = Math.floor(duration % 60);
+      const durationFormatted = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      if (audioDurationText) audioDurationText.textContent = durationFormatted;
+
+      if (duration > MAX_AUDIO_DURATION_SECONDS) {
+        durationWarning?.classList.remove('hidden');
+      } else {
+        durationWarning?.classList.add('hidden');
+      }
+    };
+
+    startTranscribeBtn?.removeAttribute('disabled');
+  }
+
+  // Live Voice Recording (MediaRecorder)
+  if (recordVoiceBtn) {
+    recordVoiceBtn.addEventListener('click', async () => {
+      if (!isRecording) {
+        // Start recording
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) audioChunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            currentAudioBlob = recordedBlob;
+            displayAudioPreview(recordedBlob, `voice-recording-${new Date().toLocaleTimeString()}.webm`);
+            stream.getTracks().forEach((track) => track.stop());
+          };
+
+          mediaRecorder.start(250);
+          isRecording = true;
+          recordSeconds = 0;
+          recordTimer?.classList.remove('hidden');
+          recordMicIcon?.classList.add('animate-ping');
+          recordVoiceBtn.classList.add('bg-red-50', 'border-red-400', 'text-red-700');
+          if (recordBtnLabel) {
+            recordBtnLabel.textContent = getCurrentLang() === 'kn' ? 'ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ' : 'Stop Recording';
+          }
+
+          recordInterval = window.setInterval(() => {
+            recordSeconds++;
+            const mins = Math.floor(recordSeconds / 60);
+            const secs = recordSeconds % 60;
+            if (recordTimer) {
+              recordTimer.textContent = `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs} / 02:00`;
+            }
+
+            if (recordSeconds >= MAX_AUDIO_DURATION_SECONDS) {
+              stopRecording();
+            }
+          }, 1000);
+        } catch (err) {
+          alert(
+            getCurrentLang() === 'kn'
+              ? 'ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ದಯವಿಟ್ಟು ಅನುಮತಿ ಪರಿಶೀಲಿಸಿ.'
+              : 'Could not access microphone. Please check permissions.'
+          );
+        }
+      } else {
+        stopRecording();
+      }
+    });
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      isRecording = false;
+      clearInterval(recordInterval);
+      recordTimer?.classList.add('hidden');
+      recordMicIcon?.classList.remove('animate-ping');
+      recordVoiceBtn?.classList.remove('bg-red-50', 'border-red-400', 'text-red-700');
+      if (recordBtnLabel) {
+        recordBtnLabel.textContent = getCurrentLang() === 'kn' ? 'ಧ್ವನಿ ರೆಕಾರ್ಡ್ ಮಾಡಿ' : 'Record Voice';
+      }
+    }
+  }
+
+  // Sample Kannada Audio generator (synthesizes audio waveform so user can test without upload)
+  if (trySampleAudioBtn) {
+    trySampleAudioBtn.addEventListener('click', () => {
+      // Create a short 3-second sample audio buffer via AudioContext
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const sampleRate = ctx.sampleRate;
+      const durationSeconds = 3;
+      const numFrames = sampleRate * durationSeconds;
+      const audioBuffer = ctx.createBuffer(1, numFrames, sampleRate);
+      const channelData = audioBuffer.getChannelData(0);
+
+      // Simple pleasing chime tone
+      for (let i = 0; i < numFrames; i++) {
+        const t = i / sampleRate;
+        channelData[i] = Math.sin(2 * Math.PI * 440 * t) * Math.exp(-t * 0.8) * 0.3;
+      }
+
+      // Convert to WAV Blob
+      const wavBlob = audioBufferToWavBlob(audioBuffer);
+      currentAudioBlob = wavBlob;
+      displayAudioPreview(wavBlob, 'kannada-sample-voice.wav');
+
+      // Populate sample preview output
+      if (speechOutput) {
+        speechOutput.value = 'ನಮಸ್ಕಾರ, ಕನ್ನಡಟೂಲ್ಸ್ ಮುಕ್ತ ತಂತ್ರಾಂಶ ಧ್ವನಿಯಿಂದ ಪಠ್ಯ ಪರಿವರ್ತಕಕ್ಕೆ ಸುಸ್ವಾಗತ.';
+        updateCounts();
+      }
+    });
+  }
+
+  // AudioBuffer to standard WAV Blob conversion helper
+  function audioBufferToWavBlob(buffer) {
+    const numOfChan = buffer.numberOfChannels;
+    const length = buffer.length * numOfChan * 2 + 44;
+    const out = new DataView(new ArrayBuffer(length));
+    let sample = 0;
+    let offset = 0;
+    let pos = 0;
+
+    function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
+    function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
+
+    // RIFF chunk descriptor
+    setUint32(0x46464952); // "RIFF"
+    setUint32(length - 8); // file length - 8
+    setUint32(0x45564157); // "WAVE"
+
+    // FMT sub-chunk
+    setUint32(0x20746d66); // "fmt "
+    setUint32(16); // subchunk1size (16 for PCM)
+    setUint16(1); // audio format (1 = PCM)
+    setUint16(numOfChan);
+    setUint32(buffer.sampleRate);
+    setUint32(buffer.sampleRate * 2 * numOfChan); // byte rate
+    setUint16(numOfChan * 2); // block align
+    setUint16(16); // bits per sample
+
+    // data sub-chunk
+    setUint32(0x61746164); // "data"
+    setUint32(length - pos - 4);
+
+    const channels = [];
+    for (let i = 0; i < buffer.numberOfChannels; i++) {
+      channels.push(buffer.getChannelData(i));
+    }
+
+    while (offset < buffer.length) {
+      for (let i = 0; i < numOfChan; i++) {
+        sample = Math.max(-1, Math.min(1, channels[i][offset]));
+        sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+        out.setInt16(pos, sample, true);
+        pos += 2;
+      }
+      offset++;
+    }
+
+    return new Blob([out.buffer], { type: 'audio/wav' });
+  }
+
+  // Transcribe Action
+  if (startTranscribeBtn) {
+    startTranscribeBtn.addEventListener('click', runTranscription);
+  }
+
+  if (retryBtn) {
+    retryBtn.addEventListener('click', runTranscription);
+  }
+
+  async function runTranscription() {
+    if (!currentAudioBlob || isTranscribing) return;
+
+    isTranscribing = true;
+    startTranscribeBtn?.setAttribute('disabled', 'true');
+    statusBox?.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-900', 'bg-emerald-50', 'border-emerald-200', 'text-emerald-900');
+    statusBox?.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-900');
+    statusSpinner?.classList.remove('hidden');
+    retrySection?.classList.add('hidden');
+
+    function updateStatus(state) {
+      if (statusMessage) {
+        statusMessage.textContent = formatSpeechStatus(state, getCurrentLang());
+      }
+    }
+
+    try {
+      updateStatus('uploading');
+      const result = await transcribeAudio(currentAudioBlob, hfSpaceUrl, (state) => {
+        updateStatus(state);
+      });
+
+      if (speechOutput) {
+        speechOutput.value = result.text;
+        updateCounts();
+      }
+
+      statusSpinner?.classList.add('hidden');
+      statusBox?.classList.replace('bg-blue-50', 'bg-emerald-50');
+      statusBox?.classList.replace('border-blue-200', 'border-emerald-200');
+      statusBox?.classList.replace('text-blue-900', 'text-emerald-900');
+      if (statusMessage) {
+        statusMessage.textContent = getCurrentLang() === 'kn' ? 'ಪರಿವರ್ತನೆ ಯಶಸ್ವಿಯಾಗಿದೆ!' : 'Transcription successful!';
+      }
+    } catch (err) {
+      statusSpinner?.classList.add('hidden');
+      statusBox?.classList.replace('bg-blue-50', 'bg-red-50');
+      statusBox?.classList.replace('border-blue-200', 'border-red-200');
+      statusBox?.classList.replace('text-blue-900', 'text-red-900');
+      retrySection?.classList.remove('hidden');
+      if (statusMessage) {
+        statusMessage.textContent = err.message || (getCurrentLang() === 'kn' ? 'ದೋಷ ಸಂಭವಿಸಿದೆ' : 'An error occurred');
+      }
+    } finally {
+      isTranscribing = false;
+      startTranscribeBtn?.removeAttribute('disabled');
+    }
+  }
+
+  function updateCounts() {
+    if (!speechOutput) return;
+    const txt = speechOutput.value.trim();
+    if (charCount) charCount.textContent = String(txt.length);
+    if (wordCount) wordCount.textContent = String(txt ? txt.split(/\s+/).length : 0);
+  }
+
+  if (speechOutput) {
+    speechOutput.addEventListener('input', updateCounts);
+  }
+
+  // Copy button
+  if (copyBtn && speechOutput && copyBtnText) {
+    copyBtn.addEventListener('click', async () => {
+      const text = speechOutput.value;
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        const orig = copyBtnText.textContent;
+        copyBtnText.textContent = getCurrentLang() === 'kn' ? 'ನಕಲಿಸಲಾಗಿದೆ!' : 'Copied!';
+        copyBtn.classList.replace('bg-blue-600', 'bg-emerald-600');
+        setTimeout(() => {
+          copyBtnText.textContent = orig;
+          copyBtn.classList.replace('bg-emerald-600', 'bg-blue-600');
+        }, 2000);
+      } catch {
+        speechOutput.select();
+        document.execCommand('copy');
+      }
+    });
+  }
+
+  // Download button
+  if (downloadBtn && speechOutput) {
+    downloadBtn.addEventListener('click', () => {
+      const text = speechOutput.value;
+      if (!text) return;
+      downloadTextAsFile(text, 'kannada-speech-transcription.txt');
+    });
+  }
+
+  // Clear button
+  if (clearBtn && speechOutput) {
+    clearBtn.addEventListener('click', () => {
+      speechOutput.value = '';
+      updateCounts();
+    });
+  }
+</script>

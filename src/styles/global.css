@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * Kannada Font Fallbacks and Rendering Optimizations
+ * Ensures characters, vattakshara (subscripts), and vowel signs never show as empty boxes (tofu)
+ */
+@layer base {
+  html {
+    font-family: 'Noto Sans Kannada', 'Tunga', 'Kedage', 'Mallige', 'Nirmala UI', 'Vijaya', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Kannada script has vertical conjuncts requiring slightly generous line-height */
+  body {
+    line-height: 1.65;
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+
+  /* Prevent text clipping on complex ligature scripts */
+  h1, h2, h3, h4, h5, h6, p, span, button, input, textarea {
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+}
+
+/* Custom interactive utilities */
+.brand-gradient {
+  background: linear-gradient(135deg, #C8102E 0%, #D97706 100%);
+}
+
+.brand-border {
+  border-color: rgba(200, 16, 46, 0.2);
+}
+
